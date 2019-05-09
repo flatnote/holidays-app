@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Lato:400, 900);
+@import url(https://fonts.googleapis.com/css?family=Lato:400,900);
 
 body {
   font-family: "Lato", sans-serif;
@@ -16,13 +16,18 @@ h1 {
   margin: 0 0 10px 0;
   text-decoration: none;
   color: black;
-}
-.holiday :hover {
   background: #eee;
+  width: 90%
 }
+
+.holiday:hover {
+  background: rgb(248, 165, 12);
+}
+
 .holiday span {
   margin: 0 2px;
 }
+
 .holiday span:first-child {
   font-weight: 900;
 }
