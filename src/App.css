@@ -11,13 +11,9 @@ h1 {
 
 .holiday {
   display: block;
-  padding: 10px;
-  border: 1px solid #ccc;
-  margin: 0 0 10px 0;
   text-decoration: none;
   color: black;
   background: #eee;
-  width: 90%
 }
 
 .holiday:hover {

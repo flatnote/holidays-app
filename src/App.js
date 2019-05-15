@@ -14,7 +14,7 @@ function sortOldToNew(data) {
   return data.sort(function(a, b) {
     const dateA = new Date(a.publicHolidayDate),
       dateB = new Date(b.publicHolidayDate);
-    return dateB - dateA;
+    return dateA - dateB;
   });
 }
 
@@ -22,28 +22,61 @@ function sortNewToOld(data) {
   return data.sort(function(a, b) {
     const dateA = new Date(a.publicHolidayDate),
       dateB = new Date(b.publicHolidayDate);
-    return dateA - dateB;
+    return dateB - dateA;
   });
 }
+
+const template = [
+  { month: "January", data: [] },
+  { month: "February", data: [] },
+  { month: "March", data: [] },
+  { month: "April", data: [] },
+  { month: "May", data: [] },
+  { month: "June", data: [] },
+  { month: "July ", data: [] },
+  { month: "August", data: [] },
+  { month: "September", data: [] },
+  { month: "October", data: [] },
+  { month: "November ", data: [] },
+  { month: "December", data: [] }
+];
 
 class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      holidaysData: sortNewToOld(data.holidays),
-      sort: "old"
+      holidaysData: sortOldToNew(data.holidays),
+      sort: "old",
+      cardData: template
     };
 
     this.selectChange = this.selectChange.bind(this);
     this.sortContent = this.sortContent.bind(this);
+    this.groupMonth = this.groupMonth.bind(this);
   }
 
   componentDidMount() {
-    axios.get(scgAPI).then(response => {
-      this.setState({ holidaysData: sortNewToOld(response.data) });
-    });
+    axios
+      .get(scgAPI)
+      .then(response => {
+        this.setState({ holidaysData: sortOldToNew(response.data) });
+      })
+      .then(() => this.groupMonth());
   }
+
+  groupMonth = () => {
+    const { holidaysData, cardData } = this.state;
+
+    this.setState({
+      cardData: cardData.map((item, index) => {
+        item.data = holidaysData.filter(
+          holiday => moment(holiday.publicHolidayDate).get("month") === index
+        );
+        return item;
+      })
+    });
+  };
 
   selectChange(event) {
     this.setState({ sort: event.target.value });
@@ -60,43 +93,73 @@ class App extends Component {
     }
   }
 
-  render() {
-    const { holidaysData } = this.state;
+  renderCardGroup = () => {
+    const { cardData } = this.state;
+    return (
+      <div className="row" key="animate1">
+        {cardData.map(item => {
+          return (
+            <div className="col-sm-6" key={item.month}>
+              <div className="card" style={{ margin: 10 }}>
+                <div className="card-body holiday">
+                  <h5 className="card-title">
+                    <span role="img" aria-label="Calendar">
+                      📅
+                    </span>
+                    {` ${item.month}`}
+                  </h5>
+                  <div className="card-text" style={{ minHeight: 100 }}>
+                    <ul>
+                      {item.data.map(subItem => (
+                        <li key={subItem.publicHolidayDate}>
+                          {` ${subItem.publicHolidayName} ${moment(
+                            subItem.publicHolidayDate
+                          ).format("MMMM Do YYYY")}`}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
 
+  render() {
     return (
       <div className="App container">
         {/* <Demo children={<h1>Holidays!</h1>} /> */}
-        {/* <h2>{this.state.sort}</h2> */}
-        <div class="row justify-content-md-center">
-          <div class="col">
+        <div className="row justify-content-md-center">
+          <div className="col">
             <h1>Holidays!</h1>
           </div>
-          <div class="col" />
-          <div class="col">
+          <div className="col" />
+          <div className="col">
             <select
               value={this.state.sort}
               onChange={this.selectChange}
               className="browser-default custom-select"
               style={{ width: 200 }}
             >
-              <option value="old">old -> new</option>
-              <option value="new">new -> old</option>
+              <option value="old">first -> last</option>
+              <option value="new">last -> first</option>
             </select>
             <button
               type="button"
-              class="btn btn-primary"
+              className="btn btn-primary"
               onClick={this.sortContent}
             >
               Sort
             </button>
           </div>
         </div>
+
         <QueueAnim delay={300}>
-          {/* <div key="demo1">Queue entering</div>
-          <div key="demo2">Queue entering</div>
-          <div key="demo3">Queue entering</div>
-          <div key="demo4">Queue entering</div> */}
-          {holidaysData.map((item, index) => (
+          {this.renderCardGroup()}
+          {/* {holidaysData.map((item, index) => (
             <div key={index} className="holiday">
               <span role="img" aria-label="Calendar">
                 📅
@@ -106,7 +169,7 @@ class App extends Component {
                 {moment(item.publicHolidayDate).format("MMMM Do YYYY")}
               </span>
             </div>
-          ))}
+          ))} */}
         </QueueAnim>
         {/* <TweenOneGroup>
           {data.holidays.map((item, index) => (
