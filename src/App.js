@@ -1,16 +1,29 @@
+import axios from "axios";
+import moment from "moment";
+import QueueAnim from "rc-queue-anim";
+// import TweenOne from "rc-tween-one";
 import React, { Component } from "react";
 import "./App.css";
 import data from "./jsonData/holidays.json";
-import moment from "moment";
-import Demo from "./Demo";
-import TweenOne from "rc-tween-one";
-import QueueAnim from "rc-queue-anim";
 
-const TweenOneGroup = TweenOne.TweenOneGroup;
+// const TweenOneGroup = TweenOne.TweenOneGroup;
+const scgAPI =
+  "https://scgchem-mdm.scg.com/v1.0/Api/MDM/GetAllPublicHolidaysByYears?years=2019";
 
 class App extends Component {
+  state = {
+    holidaysData: data.holidays
+  };
+
+  componentDidMount() {
+    axios.get(scgAPI).then(response => {
+      this.setState({ holidaysData: response.data });
+    });
+  }
+
   render() {
-    console.log(data.holidays);
+    const { holidaysData } = this.state;
+
     return (
       <div className="App">
         {/* <Demo children={<h1>Holidays!</h1>} /> */}
@@ -20,9 +33,11 @@ class App extends Component {
           <div key="demo2">Queue entering</div>
           <div key="demo3">Queue entering</div>
           <div key="demo4">Queue entering</div> */}
-          {data.holidays.map((item, index) => (
+          {holidaysData.map((item, index) => (
             <div key={index} className="holiday">
-              <span>📅</span>
+              <span role="img" aria-label="Calendar">
+                📅
+              </span>
               <span>Topic: {item.publicHolidayName}</span>
               <span>
                 {moment(item.publicHolidayDate).format("MMMM Do YYYY")}
