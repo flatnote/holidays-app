@@ -8,21 +8,13 @@ import data from "./jsonData/holidays.json";
 
 // const TweenOneGroup = TweenOne.TweenOneGroup;
 const scgAPI =
-  "https://scgchem-mdm.scg.com/v1.0/Api/MDM/GetAllPublicHolidaysByYears?years=2019";
+  "https://scgchem-mdm.scg.com/v1.0/Api/MDM/GetAllPublicHolidaysByYears";
 
-function sortOldToNew(data) {
+function sortFirstToLast(data) {
   return data.sort(function(a, b) {
     const dateA = new Date(a.publicHolidayDate),
       dateB = new Date(b.publicHolidayDate);
     return dateA - dateB;
-  });
-}
-
-function sortNewToOld(data) {
-  return data.sort(function(a, b) {
-    const dateA = new Date(a.publicHolidayDate),
-      dateB = new Date(b.publicHolidayDate);
-    return dateB - dateA;
   });
 }
 
@@ -46,28 +38,38 @@ class App extends Component {
     super(props);
 
     this.state = {
-      holidaysData: sortOldToNew(data.holidays),
-      sort: "old",
-      cardData: template
+      holidaysData: sortFirstToLast(data.holidays),
+      yearSeleced: moment().year(),
+      cardData: template,
+      options: []
     };
 
     this.selectChange = this.selectChange.bind(this);
-    this.sortContent = this.sortContent.bind(this);
     this.groupMonth = this.groupMonth.bind(this);
+    this.prepareOption = this.prepareOption.bind(this);
+    this.getHolidayData = this.getHolidayData.bind(this);
   }
 
   componentDidMount() {
-    axios
-      .get(scgAPI)
-      .then(response => {
-        this.setState({ holidaysData: sortOldToNew(response.data) });
-      })
-      .then(() => this.groupMonth());
+    this.getHolidayData();
   }
+
+  getHolidayData = () => {
+    const { yearSeleced } = this.state;
+    const url = `${scgAPI}?years=${yearSeleced}`;
+    axios
+      .get(url)
+      .then(response => {
+        this.setState({ holidaysData: sortFirstToLast(response.data) });
+      })
+      .then(() => this.groupMonth())
+      .catch(() => {
+        this.groupMonth();
+      });
+  };
 
   groupMonth = () => {
     const { holidaysData, cardData } = this.state;
-
     this.setState({
       cardData: cardData.map((item, index) => {
         item.data = holidaysData.filter(
@@ -79,18 +81,7 @@ class App extends Component {
   };
 
   selectChange(event) {
-    this.setState({ sort: event.target.value });
-  }
-
-  sortContent() {
-    const { sort, holidaysData } = this.state;
-    if (sort === "old") {
-      this.setState({ holidaysData: sortOldToNew(holidaysData) });
-    }
-
-    if (sort === "new") {
-      this.setState({ holidaysData: sortNewToOld(holidaysData) });
-    }
+    this.setState({ yearSeleced: event.target.value });
   }
 
   renderCardGroup = () => {
@@ -114,7 +105,7 @@ class App extends Component {
                         <li key={subItem.publicHolidayDate}>
                           {` ${subItem.publicHolidayName} ${moment(
                             subItem.publicHolidayDate
-                          ).format("MMMM Do YYYY")}`}
+                          ).format("Do MMMM YYYY")}`}
                         </li>
                       ))}
                     </ul>
@@ -128,6 +119,22 @@ class App extends Component {
     );
   };
 
+  prepareOption = () => {
+    const min = moment().year() - 10;
+    const max = moment().year() + 10;
+
+    let optionComponent = [];
+    for (let index = min; index < max; index++) {
+      optionComponent.push(index);
+    }
+
+    return optionComponent.map(item => (
+      <option key={item} value={item}>
+        {item}
+      </option>
+    ));
+  };
+
   render() {
     return (
       <div className="App container">
@@ -136,23 +143,22 @@ class App extends Component {
           <div className="col">
             <h1>Holidays!</h1>
           </div>
-          <div className="col" />
           <div className="col">
             <select
-              value={this.state.sort}
+              value={this.state.yearSeleced}
               onChange={this.selectChange}
               className="browser-default custom-select"
-              style={{ width: 200 }}
+              style={{ width: 100 }}
             >
-              <option value="old">first -> last</option>
-              <option value="new">last -> first</option>
+              {this.prepareOption()}
             </select>
             <button
               type="button"
               className="btn btn-primary"
-              onClick={this.sortContent}
+              onClick={this.getHolidayData}
+              style={{ marginLeft: 10 }}
             >
-              Sort
+              Change year
             </button>
           </div>
         </div>
