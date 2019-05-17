@@ -10,11 +10,11 @@ import data from "./jsonData/holidays.json";
 const scgAPI =
   "https://scgchem-mdm.scg.com/v1.0/Api/MDM/GetAllPublicHolidaysByYears";
 
-function sortFirstToLast(data) {
-  return data.sort(function(a, b) {
-    const dateA = new Date(a.publicHolidayDate),
-      dateB = new Date(b.publicHolidayDate);
-    return dateA - dateB;
+function sortFirstToLast(listData) {
+  return listData.sort(function(first, second) {
+    const dateFirst = new Date(first.publicHolidayDate),
+      dateSecond = new Date(second.publicHolidayDate);
+    return dateFirst - dateSecond;
   });
 }
 
