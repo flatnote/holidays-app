@@ -66,7 +66,7 @@ class App extends Component {
 
     if (data && scgData && data.length !== scgData.length) {
       const url = `${dataBaseAPI}/insert`;
-      for (let index = 1; index < scgData.length; index++) {
+      for (let index = 0; index < scgData.length; index++) {
         const element = scgData[index];
         axios.post(url, element).then(response => console.log(response));
       }
