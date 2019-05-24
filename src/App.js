@@ -4,11 +4,14 @@ import QueueAnim from "rc-queue-anim";
 // import TweenOne from "rc-tween-one";
 import React, { Component } from "react";
 import "./App.css";
-import data from "./jsonData/holidays.json";
+import localData from "./jsonData/holidays.json";
+import loadingImg from "./svg/Interwind-1s-200px.svg";
 
 // const TweenOneGroup = TweenOne.TweenOneGroup;
 const scgAPI =
   "https://scgchem-mdm.scg.com/v1.0/Api/MDM/GetAllPublicHolidaysByYears";
+
+const dataBaseAPI = "https://line-noti-bot.herokuapp.com/api/holidays";
 
 function sortFirstToLast(listData) {
   return listData.sort(function(first, second) {
@@ -38,34 +41,58 @@ class App extends Component {
     super(props);
 
     this.state = {
-      holidaysData: sortFirstToLast(data.holidays),
+      holidaysData: sortFirstToLast(localData.holidays),
       yearSeleced: moment().year(),
       cardData: template,
-      options: []
+      options: [],
+      loading: false
     };
 
     this.selectChange = this.selectChange.bind(this);
     this.groupMonth = this.groupMonth.bind(this);
     this.prepareOption = this.prepareOption.bind(this);
     this.getHolidayData = this.getHolidayData.bind(this);
+    this.synchronizeData = this.synchronizeData.bind(this);
   }
 
-  componentDidMount() {
+  componentDidMount = () => {
     this.getHolidayData();
-  }
+  };
 
-  getHolidayData = () => {
+  synchronizeData = async () => {
+    this.setState({ loading: true });
+    const data = await this.getDatabase();
+    const scgData = await this.getScgData();
+
+    if (data && scgData && data.length !== scgData.length) {
+      const url = `${dataBaseAPI}/insert`;
+      for (let index = 1; index < scgData.length; index++) {
+        const element = scgData[index];
+        axios.post(url, element).then(response => console.log(response));
+      }
+    }
+
+    this.setState({ loading: false });
+  };
+
+  getDatabase = () => {
+    const url = `${dataBaseAPI}/all`;
+    return axios.get(url).then(response => response.data);
+  };
+
+  getScgData = () => {
     const { yearSeleced } = this.state;
     const url = `${scgAPI}?years=${yearSeleced}`;
-    axios
-      .get(url)
-      .then(response => {
-        this.setState({ holidaysData: sortFirstToLast(response.data) });
-      })
-      .then(() => this.groupMonth())
-      .catch(() => {
-        this.groupMonth();
-      });
+    return axios.get(url).then(response => response.data);
+  };
+
+  getHolidayData = async () => {
+    this.setState({ loading: true });
+    const data = await this.getDatabase();
+    this.setState(
+      { holidaysData: sortFirstToLast(data), loading: false },
+      this.groupMonth
+    );
   };
 
   groupMonth = () => {
@@ -85,8 +112,20 @@ class App extends Component {
   }
 
   renderCardGroup = () => {
-    const { cardData } = this.state;
-    return (
+    const { cardData, loading } = this.state;
+
+    return loading ? (
+      <img
+        src={loadingImg}
+        style={{
+          display: "block",
+          marginLeft: "auto",
+          marginRight: "auto",
+          width: "50%"
+        }}
+        alt="loading"
+      />
+    ) : (
       <div className="row" key="animate1">
         {cardData.map(item => {
           return (
@@ -159,6 +198,14 @@ class App extends Component {
               style={{ marginLeft: 10 }}
             >
               Change year
+            </button>
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={this.synchronizeData}
+              style={{ marginLeft: 10 }}
+            >
+              Synchronize SCG Data
             </button>
           </div>
         </div>
