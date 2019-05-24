@@ -28,3 +28,7 @@ h1 {
 .holiday span:first-child {
   font-weight: 900;
 }
+
+.synchronize-btn:hover {
+  cursor: pointer;
+}

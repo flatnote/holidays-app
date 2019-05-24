@@ -68,9 +68,11 @@ class App extends Component {
       const url = `${dataBaseAPI}/insert`;
       for (let index = 0; index < scgData.length; index++) {
         const element = scgData[index];
-        axios.post(url, element).then(response => console.log(response));
+        await axios.post(url, element).then(response => console.log(response));
       }
     }
+
+    await this.getHolidayData();
 
     this.setState({ loading: false });
   };
@@ -178,7 +180,7 @@ class App extends Component {
     return (
       <div className="App container">
         {/* <Demo children={<h1>Holidays!</h1>} /> */}
-        <div className="row justify-content-md-center">
+        <div className="row">
           <div className="col">
             <h1>Holidays!</h1>
           </div>
@@ -199,14 +201,13 @@ class App extends Component {
             >
               Change year
             </button>
-            <button
-              type="button"
-              className="btn btn-primary"
+            <img
+              className="synchronize-btn"
+              src="https://img.icons8.com/flat_round/32/000000/synchronize.png"
               onClick={this.synchronizeData}
               style={{ marginLeft: 10 }}
-            >
-              Synchronize SCG Data
-            </button>
+              alt="synchronize-btn"
+            />
           </div>
         </div>
 
@@ -239,6 +240,14 @@ class App extends Component {
             />
           ))}
         </TweenOneGroup> */}
+        <footer>
+          <div className="container" style={{ textAlign: "center" }}>
+            <p>
+              Powered by
+              <a href="."> Ball</a>
+            </p>
+          </div>
+        </footer>
       </div>
     );
   }
