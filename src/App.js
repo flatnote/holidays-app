@@ -78,7 +78,8 @@ class App extends Component {
   };
 
   getDatabase = () => {
-    const url = `${dataBaseAPI}/all`;
+    const { yearSeleced } = this.state;
+    const url = `${dataBaseAPI}/all?year=${yearSeleced}`;
     return axios.get(url).then(response => response.data);
   };
 
@@ -144,9 +145,12 @@ class App extends Component {
                     <ul>
                       {item.data.map(subItem => (
                         <li key={subItem.publicHolidayDate}>
-                          {` ${subItem.publicHolidayName} ${moment(
-                            subItem.publicHolidayDate
-                          ).format("Do MMMM YYYY")}`}
+                          <span>{subItem.publicHolidayName}</span>
+                          <span style={{ color: "#e44f24", fontWeight: 700 }}>
+                            {moment(subItem.publicHolidayDate).format(
+                              "Do MMMM YYYY"
+                            )}
+                          </span>
                         </li>
                       ))}
                     </ul>

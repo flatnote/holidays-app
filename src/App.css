@@ -25,9 +25,9 @@ h1 {
   margin: 0 2px;
 }
 
-.holiday span:first-child {
+/* .holiday span:first-child {
   font-weight: 900;
-}
+} */
 
 .synchronize-btn:hover {
   cursor: pointer;
