@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import socketIOClient from "socket.io-client";
 import { Launcher } from "react-chat-window";
 
-const socketEndpoint = process.env.SOCKET_ENDPOINT || "http://localhost:9000";
+const socketEndpoint = "https://socket-holidays-chat.herokuapp.com";
 
 class Demo extends Component {
   constructor() {
