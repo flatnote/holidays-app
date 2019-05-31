@@ -1,13 +1,11 @@
 import axios from "axios";
 import moment from "moment";
 import QueueAnim from "rc-queue-anim";
-// import TweenOne from "rc-tween-one";
 import React, { Component } from "react";
 import "./App.css";
-import localData from "./jsonData/holidays.json";
 import loadingImg from "./svg/Interwind-1s-200px.svg";
+import MessageSocket from "./components/MessageSocket";
 
-// const TweenOneGroup = TweenOne.TweenOneGroup;
 const scgAPI =
   "https://scgchem-mdm.scg.com/v1.0/Api/MDM/GetAllPublicHolidaysByYears";
 
@@ -41,7 +39,7 @@ class App extends Component {
     super(props);
 
     this.state = {
-      holidaysData: sortFirstToLast(localData.holidays),
+      holidaysData: [],
       yearSeleced: moment().year(),
       cardData: template,
       options: [],
@@ -183,7 +181,6 @@ class App extends Component {
   render() {
     return (
       <div className="App container">
-        {/* <Demo children={<h1>Holidays!</h1>} /> */}
         <div className="row">
           <div className="col">
             <h1>Holidays!</h1>
@@ -215,35 +212,7 @@ class App extends Component {
           </div>
         </div>
 
-        <QueueAnim delay={300}>
-          {this.renderCardGroup()}
-          {/* {holidaysData.map((item, index) => (
-            <div key={index} className="holiday">
-              <span role="img" aria-label="Calendar">
-                📅
-              </span>
-              <span>Topic: {item.publicHolidayName}</span>
-              <span>
-                {moment(item.publicHolidayDate).format("MMMM Do YYYY")}
-              </span>
-            </div>
-          ))} */}
-        </QueueAnim>
-        {/* <TweenOneGroup>
-          {data.holidays.map((item, index) => (
-            <Demo
-              key={index}
-              children={
-                <div className="holiday">
-                  <span>Topic: {item.publicHolidayName}</span>
-                  <span>
-                    📅 {moment(item.publicHolidayDate).format("MMMM Do YYYY")}
-                  </span>
-                </div>
-              }
-            />
-          ))}
-        </TweenOneGroup> */}
+        <QueueAnim delay={300}>{this.renderCardGroup()}</QueueAnim>
         <footer>
           <div className="container" style={{ textAlign: "center" }}>
             <p>
@@ -252,6 +221,8 @@ class App extends Component {
             </p>
           </div>
         </footer>
+
+        <MessageSocket />
       </div>
     );
   }
