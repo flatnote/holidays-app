@@ -23,6 +23,7 @@ class Demo extends Component {
   }
 
   componentDidMount = () => {
+    console.log(process.env);
     this.socketResponse();
   };
 
