@@ -31,8 +31,8 @@ class Demo extends Component {
   socketResponse = () => {
     const { endpoint } = this.state;
     const socket = socketIOClient(endpoint);
-    socket.on("new-message", messageNew => {
-      this.setState({ messageList: messageNew });
+    socket.on("new-message", messageList => {
+      this.setState({ messageList });
     });
   };
 
