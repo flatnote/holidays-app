@@ -1,15 +1,5 @@
 @import url(https://fonts.googleapis.com/css?family=Lato:400,900);
 
-body {
-  font-family: "Lato", sans-serif;
-  padding: 20px;
-}
-
-h1 {
-  font-weight: 900;
-  font-size: 60px;
-}
-
 .holiday {
   display: block;
   text-decoration: none;
