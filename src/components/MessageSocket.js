@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import socketIOClient from "socket.io-client";
 import { Launcher } from "react-chat-window";
+import "./Main.css";
 
 const socketEndpoint = "https://socket-holidays-chat.herokuapp.com";
 
@@ -50,7 +51,7 @@ class Demo extends Component {
   render() {
     const { messageList } = this.state;
     return (
-      <div>
+      <div className="customLinkColor">
         <Launcher
           agentProfile={{
             teamName: "Chit-Chat",
