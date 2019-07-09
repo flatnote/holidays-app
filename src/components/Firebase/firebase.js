@@ -1,6 +1,7 @@
 import app from "firebase/app";
 import "firebase/auth";
 import "firebase/database";
+import "firebase/messaging";
 
 const firebaseConfig = {
   apiKey: "AIzaSyC5bPhG7665uJceRNV0v3yrbNqTEBrlH2Y",
@@ -65,6 +66,19 @@ class Firebase {
         fallback();
       }
     });
+
+  askForPermissioToReceiveNotifications = async () => {
+    try {
+      const messaging = app.messaging();
+      await messaging.requestPermission();
+      const token = await messaging.getToken();
+      console.log("token is:", token);
+
+      return token;
+    } catch (error) {
+      console.error(error);
+    }
+  };
 }
 
 export default Firebase;

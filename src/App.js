@@ -5,6 +5,7 @@ import React, { Component } from "react";
 import "./App.css";
 import loadingImg from "./svg/Interwind-1s-200px.svg";
 import MessageSocket from "./components/MessageSocket";
+import { withFirebase } from "./components/Firebase";
 
 const scgAPI =
   "https://scgchem-mdm.scg.com/v1.0/Api/MDM/GetAllPublicHolidaysByYears";
@@ -55,6 +56,9 @@ class App extends Component {
 
   componentDidMount = () => {
     this.getHolidayData();
+    console.log(this.props);
+
+    this.props.firebase.askForPermissioToReceiveNotifications();
   };
 
   synchronizeData = async () => {
@@ -228,4 +232,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default withFirebase(App);
