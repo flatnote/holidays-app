@@ -40,6 +40,8 @@ class Firebase {
 
   users = () => this.db.ref("users");
 
+  chatMessage = () => this.db.ref("message");
+
   onAuthUserListener = (next, fallback) =>
     this.auth.onAuthStateChanged(authUser => {
       if (authUser) {
@@ -72,7 +74,7 @@ class Firebase {
       const messaging = app.messaging();
       await messaging.requestPermission();
       const token = await messaging.getToken();
-      console.log("token is:", token);
+      // console.log("token is:", token);
 
       return token;
     } catch (error) {
