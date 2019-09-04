@@ -92,12 +92,12 @@ class Demo extends Component {
   }
 }
 
-const Test = withFirebase(Demo);
+const ComposeFirebase = withFirebase(Demo);
 
 const MessageSocket = () => {
   return (
     <div style={{ zIndex: 99 }}>
-      <Test />
+      <ComposeFirebase />
     </div>
   );
 };

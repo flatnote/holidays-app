@@ -6,6 +6,8 @@ import "./App.css";
 import loadingImg from "./svg/Interwind-1s-200px.svg";
 import MessageSocket from "./components/MessageSocket";
 import { withFirebase } from "./components/Firebase";
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import Login from "./components/Login";
 
 const scgAPI =
   "https://scgchem-mdm.scg.com/v1.0/Api/MDM/GetAllPublicHolidaysByYears";
@@ -35,7 +37,7 @@ const template = [
   { month: "December", data: [] }
 ];
 
-class App extends Component {
+class Main extends Component {
   constructor(props) {
     super(props);
 
@@ -56,9 +58,7 @@ class App extends Component {
 
   componentDidMount = () => {
     this.getHolidayData();
-    console.log(this.props);
-
-    this.props.firebase.askForPermissioToReceiveNotifications();
+    // this.props.firebase.askForPermissioToReceiveNotifications();
   };
 
   synchronizeData = async () => {
@@ -184,7 +184,7 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App container">
+      <div className="container" style={{ padding: 20 }}>
         <div className="row">
           <div className="col">
             <h1>Holidays!</h1>
@@ -221,7 +221,7 @@ class App extends Component {
           <div className="container" style={{ textAlign: "center" }}>
             <p>
               Powered by
-              <a href="."> Ball</a>
+              <a href="https://compassionate-pike-7765dd.netlify.com/"> Ball</a>
             </p>
           </div>
         </footer>
@@ -230,6 +230,17 @@ class App extends Component {
       </div>
     );
   }
+}
+
+function App() {
+  return (
+    <Router>
+      <div>
+        <Route exact path="/" component={Main} />
+        <Route path="/sign-in" component={Login} />
+      </div>
+    </Router>
+  );
 }
 
 export default withFirebase(App);
