@@ -8,6 +8,8 @@ import MessageSocket from "./components/MessageSocket";
 import { withFirebase } from "./components/Firebase";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import Login from "./components/Login";
+import swal from "sweetalert2";
+import { withSwalInstance } from "sweetalert2-react";
 
 const scgAPI =
   "https://scgchem-mdm.scg.com/v1.0/Api/MDM/GetAllPublicHolidaysByYears";
@@ -232,15 +234,44 @@ class Main extends Component {
   }
 }
 
-function App() {
-  return (
-    <Router>
-      <div>
-        <Route exact path="/" component={Main} />
-        <Route path="/sign-in" component={Login} />
-      </div>
-    </Router>
-  );
+const SweetAlert = withSwalInstance(swal);
+
+class App extends Component {
+  state = {
+    show: false,
+    acconuncmentData: {}
+  };
+
+  componentDidMount() {
+    const now = moment();
+    const year = now.format("YYYY");
+    const month = now.format("MM");
+    const url = `${dataBaseAPI}/homeAcconuncment?year=${year}&month=${month}`;
+    axios
+      .get(url)
+      .then(response =>
+        this.setState({ acconuncmentData: response.data, show: true })
+      );
+  }
+
+  render() {
+    const { acconuncmentData } = this.state;
+    return (
+      <Router>
+        <div>
+          <SweetAlert
+            show={this.state.show}
+            title={acconuncmentData.acconuncmentTitle}
+            text={acconuncmentData.acconuncmentMessage}
+            onConfirm={() => this.setState({ show: false })}
+            type={acconuncmentData.acconuncmentType}
+          />
+          <Route exact path="/" component={Main} />
+          <Route path="/sign-in" component={Login} />
+        </div>
+      </Router>
+    );
+  }
 }
 
 export default withFirebase(App);

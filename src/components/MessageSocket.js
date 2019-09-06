@@ -38,7 +38,7 @@ class Demo extends Component {
       let messages = [];
       Object.keys(messagesObj).forEach(key => messages.push(messagesObj[key]));
       messages = messages.map(message => {
-        console.log(message);
+        // console.log(message);
         return { text: message.text, user: message.user, id: message.key };
       });
       this.setState(prevState => ({
@@ -70,7 +70,7 @@ class Demo extends Component {
 
   render() {
     const { messageList, messages } = this.state;
-    console.log(messages);
+    // console.log(messages);
     return (
       <div className="customLinkColor">
         <Launcher

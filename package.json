@@ -13,7 +13,8 @@
     "react-dom": "^16.8.3",
     "react-router-dom": "^5.0.0",
     "react-scripts": "2.1.5",
-    "socket.io-client": "^2.2.0"
+    "socket.io-client": "^2.2.0",
+    "sweetalert2-react": "^0.8.3"
   },
   "scripts": {
     "start": "react-scripts start",
