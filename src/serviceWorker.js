@@ -54,6 +54,20 @@ export function register(config) {
   }
 }
 
+function displayUpdateNotification() {
+  const link = document.createElement("a");
+  link.classList.add("update-notification");
+  link.setAttribute("href", "#");
+  link.innerHTML = "Update is available. Click here to install.";
+
+  link.addEventListener("click", e => {
+    e.preventDefault();
+    window.location.reload();
+  });
+
+  document.querySelector("body").appendChild(link);
+}
+
 function registerValidSW(swUrl, config) {
   navigator.serviceWorker
     .register(swUrl)
@@ -74,6 +88,9 @@ function registerValidSW(swUrl, config) {
                   "tabs for this page are closed. See http://bit.ly/CRA-PWA."
               );
 
+              console.log(config);
+
+              displayUpdateNotification();
               // Execute callback
               if (config && config.onUpdate) {
                 config.onUpdate(registration);
