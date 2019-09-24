@@ -213,7 +213,7 @@ class Main extends Component {
           return (
             <div className="card">
               <div className="card_image">
-                <img src={srcImgs[index].src} />{" "}
+                <img src={srcImgs[index].src} alt={`card ${index}`} />{" "}
               </div>
               <div className={srcImgs[index].titleClass}>
                 <span role="img" aria-label="Calendar">

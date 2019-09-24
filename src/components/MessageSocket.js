@@ -69,7 +69,7 @@ class Demo extends Component {
   };
 
   render() {
-    const { messageList, messages } = this.state;
+    const { messageList } = this.state;
     // console.log(messages);
     return (
       <div className="customLinkColor">
