@@ -88,12 +88,11 @@
   text-align: center;
 }
 
-@media all and (max-width: 500px) {
-  .card-list {
-    /* On small screens, we are no longer using row direction but column */
-    flex-direction: column;
-  }
+.refash-btn {
+  padding-top: 2vh;
+}
 
+@media screen and (max-width: 992px) {
   .card {
     width: 300px;
     height: 60vh;
@@ -101,5 +100,24 @@
 
   .card .card_title {
     margin-top: -55vh;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .card-list {
+    /* On small screens, we are no longer using row direction but column */
+    flex-direction: column;
+  }
+
+  .card {
+    height: 55vh;
+  }
+
+  .card .card_title {
+    margin-top: -50vh;
+  }
+
+  .refash-btn {
+    padding-top: 3vh;
   }
 }
