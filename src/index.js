@@ -5,6 +5,8 @@ import Firebase, { FirebaseContext } from "./components/Firebase";
 import "./index.css";
 import * as serviceWorker from "./serviceWorker";
 import "../node_modules/sweetalert2/dist/sweetalert2.min.css";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 ReactDOM.render(
   <FirebaseContext.Provider value={new Firebase()}>

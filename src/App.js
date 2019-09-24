@@ -10,6 +10,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 // import Login from "./components/Login";
 import swal from "sweetalert2";
 import { withSwalInstance } from "sweetalert2-react";
+import Slider from "react-slick";
 
 const scgAPI =
   "https://scgchem-mdm.scg.com/v1.0/Api/MDM/GetAllPublicHolidaysByYears";
@@ -196,6 +197,19 @@ class Main extends Component {
   renderCardGroup = () => {
     const { cardData, loading } = this.state;
 
+    const now = moment();
+    const month = now.format("MM");
+
+    const settings = {
+      dots: true,
+      infinite: true,
+      speed: 500,
+      slidesToShow: 1,
+      slidesToScroll: 1,
+      initialSlide: parseInt(month) - 1
+      // adaptiveHeight: true
+    };
+
     return loading ? (
       <img
         src={loadingImg}
@@ -208,39 +222,41 @@ class Main extends Component {
         alt="loading"
       />
     ) : (
-      <div className="cards-list" key="animate1">
-        {cardData.map((item, index) => {
-          return (
-            <div className="card">
-              <div className="card_image">
-                <img src={srcImgs[index].src} alt={`card ${index}`} />{" "}
+      <div key="animate1" style={{ marginBottom: "5em" }}>
+        <Slider {...settings}>
+          {cardData.map((item, index) => {
+            return (
+              <div className="card" key={item.month}>
+                <div className="card_image">
+                  <img src={srcImgs[index].src} alt={`card ${index}`} />{" "}
+                </div>
+                <div className={srcImgs[index].titleClass}>
+                  <span role="img" aria-label="Calendar">
+                    📅
+                  </span>
+                  {` ${item.month}`}
+                </div>
+                <div
+                  className={srcImgs[index].bodyClass}
+                  style={{ minHeight: 100 }}
+                >
+                  <ul>
+                    {item.data.map(subItem => (
+                      <li key={subItem.publicHolidayDate}>
+                        <span>{subItem.publicHolidayName} </span>
+                        <span style={{ color: "#e44f24", fontWeight: 700 }}>
+                          {moment(subItem.publicHolidayDate).format(
+                            "Do MMMM YYYY"
+                          )}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
-              <div className={srcImgs[index].titleClass}>
-                <span role="img" aria-label="Calendar">
-                  📅
-                </span>
-                {` ${item.month}`}
-              </div>
-              <div
-                className={srcImgs[index].bodyClass}
-                style={{ minHeight: 100 }}
-              >
-                <ul>
-                  {item.data.map(subItem => (
-                    <li key={subItem.publicHolidayDate}>
-                      <span>{subItem.publicHolidayName} </span>
-                      <span style={{ color: "#e44f24", fontWeight: 700 }}>
-                        {moment(subItem.publicHolidayDate).format(
-                          "Do MMMM YYYY"
-                        )}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </Slider>
       </div>
     );
   };
@@ -285,10 +301,17 @@ class Main extends Component {
             >
               Change year
             </button>
-            <img
+            {/* <img
               className="synchronize-btn"
               src="https://img.icons8.com/flat_round/32/000000/synchronize.png"
               onClick={this.synchronizeData}
+              style={{ marginLeft: 10 }}
+              alt="synchronize-btn"
+            /> */}
+            <img
+              className="synchronize-btn"
+              src="https://img.icons8.com/flat_round/32/000000/synchronize.png"
+              onClick={() => window.location.reload(true)}
               style={{ marginLeft: 10 }}
               alt="synchronize-btn"
             />
@@ -297,7 +320,7 @@ class Main extends Component {
 
         <QueueAnim delay={300}>{this.renderCardGroup()}</QueueAnim>
         <footer>
-          <div className="container" style={{ textAlign: "center" }}>
+          <div className="footer">
             <p>
               Powered by
               <a href="https://compassionate-pike-7765dd.netlify.com/"> Ball</a>

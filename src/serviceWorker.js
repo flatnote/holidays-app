@@ -62,7 +62,7 @@ function displayUpdateNotification() {
 
   link.addEventListener("click", e => {
     e.preventDefault();
-    window.location.reload();
+    window.location.reload(true);
   });
 
   document.querySelector("body").appendChild(link);
@@ -128,7 +128,7 @@ function checkValidServiceWorker(swUrl, config) {
         // No service worker found. Probably a different app. Reload the page.
         navigator.serviceWorker.ready.then(registration => {
           registration.unregister().then(() => {
-            window.location.reload();
+            window.location.reload(true);
           });
         });
       } else {
