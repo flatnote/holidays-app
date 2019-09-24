@@ -7,7 +7,7 @@ import loadingImg from "./svg/Interwind-1s-200px.svg";
 import MessageSocket from "./components/MessageSocket";
 import { withFirebase } from "./components/Firebase";
 import { BrowserRouter as Router, Route } from "react-router-dom";
-import Login from "./components/Login";
+// import Login from "./components/Login";
 import swal from "sweetalert2";
 import { withSwalInstance } from "sweetalert2-react";
 
@@ -23,6 +23,81 @@ function sortFirstToLast(listData) {
     return dateFirst - dateSecond;
   });
 }
+
+const srcImgs = [
+  {
+    src:
+      "https://i.pinimg.com/564x/e9/e6/e8/e9e6e8d32e784d3ebdb2259d2016dfb6.jpg",
+    titleClass: "card_title title-black",
+    bodyClass: "card-text title-black"
+  },
+  {
+    src:
+      "https://i.pinimg.com/564x/2c/64/65/2c6465f406fe78a4dcbb9ee898793b26.jpg",
+    titleClass: "card_title title-white",
+    bodyClass: "card-text title-white"
+  },
+  {
+    src:
+      "https://i.pinimg.com/564x/8c/d0/a7/8cd0a7dd98109ad4554e9ab62171435b.jpg",
+    titleClass: "card_title title-white",
+    bodyClass: "card-text title-white"
+  },
+  {
+    src:
+      "https://i.pinimg.com/564x/4f/12/01/4f1201475f701da83a0958f6dadd57a7.jpg",
+    titleClass: "card_title title-black",
+    bodyClass: "card-text title-black"
+  },
+  {
+    src:
+      "https://i.pinimg.com/564x/e6/65/d4/e665d4c8f993cc059091dd4c247a2183.jpg",
+    titleClass: "card_title title-black",
+    bodyClass: "card-text title-black"
+  },
+  {
+    src:
+      "https://i.pinimg.com/564x/19/30/86/19308619265bd811961997bbe9f30373.jpg",
+    titleClass: "card_title title-black",
+    bodyClass: "card-text title-black"
+  },
+  {
+    src:
+      "https://i.pinimg.com/564x/df/35/77/df3577ff067e0c7e2289fb7c30090c19.jpg",
+    titleClass: "card_title title-white",
+    bodyClass: "card-text title-white"
+  },
+  {
+    src:
+      "https://i.pinimg.com/564x/eb/49/b4/eb49b4459725d04923287b916edb841d.jpg",
+    titleClass: "card_title title-white",
+    bodyClass: "card-text title-white"
+  },
+  {
+    src:
+      "https://i.pinimg.com/564x/f6/d4/19/f6d41913be89809aae005189ce9ec8ee.jpg",
+    titleClass: "card_title title-black",
+    bodyClass: "card-text title-black"
+  },
+  {
+    src:
+      "https://i.pinimg.com/564x/a2/bb/f8/a2bbf8cfe59bda4fc8890ad28460cff8.jpg",
+    titleClass: "card_title title-white",
+    bodyClass: "card-text title-white"
+  },
+  {
+    src:
+      "https://i.pinimg.com/564x/e3/8d/b2/e38db2ef17616edeee08e05e0910bf4f.jpg",
+    titleClass: "card_title title-black",
+    bodyClass: "card-text title-black"
+  },
+  {
+    src:
+      "https://i.pinimg.com/564x/1e/f0/e5/1ef0e535626599dcfca4625c0ce7522b.jpg",
+    titleClass: "card_title title-black",
+    bodyClass: "card-text title-black"
+  }
+];
 
 const template = [
   { month: "January", data: [] },
@@ -133,33 +208,35 @@ class Main extends Component {
         alt="loading"
       />
     ) : (
-      <div className="row" key="animate1">
-        {cardData.map(item => {
+      <div className="cards-list" key="animate1">
+        {cardData.map((item, index) => {
           return (
-            <div className="col-sm-6" key={item.month}>
-              <div className="card" style={{ margin: 10 }}>
-                <div className="card-body holiday">
-                  <h5 className="card-title">
-                    <span role="img" aria-label="Calendar">
-                      📅
-                    </span>
-                    {` ${item.month}`}
-                  </h5>
-                  <div className="card-text" style={{ minHeight: 100 }}>
-                    <ul>
-                      {item.data.map(subItem => (
-                        <li key={subItem.publicHolidayDate}>
-                          <span>{subItem.publicHolidayName}</span>
-                          <span style={{ color: "#e44f24", fontWeight: 700 }}>
-                            {moment(subItem.publicHolidayDate).format(
-                              "Do MMMM YYYY"
-                            )}
-                          </span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
+            <div className="card">
+              <div className="card_image">
+                <img src={srcImgs[index].src} />{" "}
+              </div>
+              <div className={srcImgs[index].titleClass}>
+                <span role="img" aria-label="Calendar">
+                  📅
+                </span>
+                {` ${item.month}`}
+              </div>
+              <div
+                className={srcImgs[index].bodyClass}
+                style={{ minHeight: 100 }}
+              >
+                <ul>
+                  {item.data.map(subItem => (
+                    <li key={subItem.publicHolidayDate}>
+                      <span>{subItem.publicHolidayName} </span>
+                      <span style={{ color: "#e44f24", fontWeight: 700 }}>
+                        {moment(subItem.publicHolidayDate).format(
+                          "Do MMMM YYYY"
+                        )}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
           );
@@ -267,7 +344,7 @@ class App extends Component {
             type={acconuncmentData.acconuncmentType}
           />
           <Route exact path="/" component={Main} />
-          <Route path="/sign-in" component={Login} />
+          {/* <Route path="/sign-in" component={Login} /> */}
         </div>
       </Router>
     );
