@@ -58,7 +58,7 @@ function displayUpdateNotification() {
   const link = document.createElement("a");
   link.classList.add("update-notification");
   link.setAttribute("href", "#");
-  link.innerHTML = "Update is available. Click here to install.";
+  link.innerHTML = "Update is available. please close this app and open again.";
 
   link.addEventListener("click", e => {
     e.preventDefault();
