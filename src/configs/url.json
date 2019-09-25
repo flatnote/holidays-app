@@ -1,0 +1,5 @@
+{
+    "ScgAPI": "https://scgchem-mdm.scg.com/v1.0/Api/MDM/GetAllPublicHolidaysByYears",
+    "HolidaysAPI": "https://line-noti-bot.herokuapp.com/api/holidays",
+    "DataBaseAPI": "https://line-noti-bot.herokuapp.com/api"
+}
