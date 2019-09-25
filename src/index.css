@@ -7,6 +7,7 @@ h1 {
 
 body {
   font-family: "Lato", sans-serif;
+  background-image: linear-gradient(to right top, #d16ba5, #c777b9, #ba83ca, #aa8fd8, #9a9ae1, #8aa7ec, #79b3f4, #69bff8, #52cffe, #41dfff, #46eefa, #5ffbf1);
 }
 
 code {
@@ -17,10 +18,10 @@ code {
 .update-notification {
   background-color: #222;
   color: #fff;
-  display:block;
+  display: block;
   position: absolute;
-  bottom:0;
-  right:0;
-  padding:0.8em 1.2em;
+  bottom: 0;
+  right: 0;
+  padding: 0.8em 1.2em;
   text-decoration: none;
 }

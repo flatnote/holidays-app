@@ -152,7 +152,7 @@ class Main extends Component {
 
   render() {
     return (
-      <div className="container" style={{ padding: 20 }}>
+      <div className="container">
         <div className="row">
           <div className="col col-sm-2 col-lg-2">
             <h1>Holidays!</h1>
