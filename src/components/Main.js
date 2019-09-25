@@ -197,7 +197,7 @@ class Main extends Component {
           <div className="footer">
             <p>
               Powered by
-              <a href="https://compassionate-pike-7765dd.netlify.com/"> Ball</a>
+              <a href={URL.MyBlog}> Ball</a>
             </p>
           </div>
         </footer>
