@@ -3,19 +3,19 @@
   "name": "Holidays App",
   "icons": [
     {
-      "src": "icons-beach-96.png",
+      "src": "beach-umbrella-icon-96.png",
       "sizes": "96x96",
       "type": "image/png"
     },
     {
-      "src": "icons-beach-144.png",
+      "src": "beach-umbrella-icon-144.png",
       "sizes": "144x144",
       "type": "image/png"
     },
     {
-      "src": "https://media.giphy.com/media/S99cgkURVO62qemEKM/200w_d.gif",
+      "src": "beach-umbrella-icon-512.png",
       "sizes": "512x512",
-      "type": "image/gif"
+      "type": "image/png"
     }
   ],
   "start_url": ".",
