@@ -7,6 +7,7 @@ h1 {
 
 body {
   font-family: "Lato", sans-serif;
+  background-color: rgb(255, 60, 11);
 }
 
 code {
@@ -19,8 +20,9 @@ code {
   color: #fff;
   display: block;
   position: absolute;
-  bottom: 0;
+  top: 0;
   right: 0;
   padding: 0.8em 1.2em;
   text-decoration: none;
+  z-index: 99;
 }
