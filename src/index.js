@@ -26,7 +26,8 @@ function onUpdateHandler(registration) {
   const link = document.createElement("a");
   link.classList.add("update-notification");
   link.setAttribute("href", "#");
-  link.innerHTML = "Update is available. Click here to reload APP.";
+  link.innerHTML =
+    "Update is available. please close this app and open it again.";
 
   link.addEventListener("click", e => {
     e.preventDefault();
