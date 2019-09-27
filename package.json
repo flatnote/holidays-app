@@ -22,7 +22,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build && workbox generateSW",
-    "heroku-postbuild": "react-scripts build && workbox generateSW",
+    "heroku-postbuild": "workbox generateSW",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
