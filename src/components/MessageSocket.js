@@ -1,8 +1,6 @@
 import React, { Component } from "react";
-import socketIOClient from "socket.io-client";
 import { Launcher } from "react-chat-window";
-import "./Main.css";
-
+import socketIOClient from "socket.io-client";
 import { withFirebase } from "./Firebase";
 
 const socketEndpoint = "https://socket-holidays-chat.herokuapp.com";
@@ -70,7 +68,7 @@ class Demo extends Component {
     const { messageList } = this.state;
     // console.log(messages);
     return (
-      <div className="customLinkColor">
+      <div className="customLinkColor" style={{ zIndex: 100 }}>
         <Launcher
           agentProfile={{
             teamName: "Holidays-Chat",
@@ -90,14 +88,4 @@ class Demo extends Component {
   }
 }
 
-const ComposeFirebase = withFirebase(Demo);
-
-const MessageSocket = () => {
-  return (
-    <div style={{ zIndex: 99 }}>
-      <ComposeFirebase />
-    </div>
-  );
-};
-
-export default MessageSocket;
+export default withFirebase(Demo);

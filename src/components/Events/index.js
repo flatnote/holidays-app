@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import ListEvent from "./ListEvent";
 import AddEvent from "./AddEvent";
+import ListEvent from "./ListEvent";
 
 class index extends Component {
   render() {

@@ -34,8 +34,6 @@ class AddEvent extends Component {
       .push({ title, description, date: formated });
 
     this.setState({ title: "", description: "", date: "" });
-
-    alert("Add events success.");
   };
 
   render() {
