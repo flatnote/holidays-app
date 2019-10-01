@@ -74,7 +74,7 @@ hr {
   left: 0;
   content: "";
   width: 100vw;
-  height: 19vh;
+  height: 150px;
   background: rgba(0, 0, 0, 0.8);
   transition: all 500ms ease-in-out;
   clip-path: circle(30px at calc(100% - 65px) 65px);
@@ -82,7 +82,7 @@ hr {
 }
 
 .menu.active .nav ul {
-  display: inline;
+  display: block;
 }
 
 .menu.active .nav:before {

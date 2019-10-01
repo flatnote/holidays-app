@@ -30,10 +30,6 @@ code {
   z-index: 99;
 }
 
-.container {
-  padding: 20px;
-}
-
 .cards-list {
   z-index: 0;
   width: 100%;
@@ -95,9 +91,8 @@ code {
 .footer {
   position: fixed;
   left: 0;
-  bottom: 0;
+  bottom: 1em;
   width: 100%;
-  margin-bottom: 1em;
   text-align: center;
 }
 
