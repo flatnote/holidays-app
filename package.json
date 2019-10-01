@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
+    "antd": "^3.23.5",
     "axios": "^0.18.1",
     "firebase": "^6.1.0",
     "moment": "^2.24.0",

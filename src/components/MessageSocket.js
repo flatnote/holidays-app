@@ -41,9 +41,7 @@ class Demo extends Component {
         // console.log(message);
         return { text: message.text, user: message.user, id: message.key };
       });
-      this.setState(prevState => ({
-        messages: messages
-      }));
+      this.setState({ messages: messages });
     });
     this.socketResponse();
   };
@@ -75,7 +73,7 @@ class Demo extends Component {
       <div className="customLinkColor">
         <Launcher
           agentProfile={{
-            teamName: "Chit-Chat",
+            teamName: "Holidays-Chat",
             imageUrl:
               "https://a.slack-edge.com/66f9/img/avatars-teams/ava_0001-34.png"
           }}

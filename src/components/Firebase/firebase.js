@@ -22,6 +22,8 @@ class Firebase {
     this.googleProvider = new app.auth.GoogleAuthProvider();
   }
 
+  database = () => this.db;
+
   doCreateUserWithEmailAndPassword = (email, password) =>
     this.auth.createUserWithEmailAndPassword(email, password);
 
@@ -41,6 +43,8 @@ class Firebase {
   users = () => this.db.ref("users");
 
   chatMessage = () => this.db.ref("message");
+
+  events = () => this.db.ref("events");
 
   onAuthUserListener = (next, fallback) =>
     this.auth.onAuthStateChanged(authUser => {

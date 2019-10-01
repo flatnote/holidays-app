@@ -3,7 +3,6 @@ import moment from "moment";
 import QueueAnim from "rc-queue-anim";
 import React, { Component } from "react";
 import Slider from "react-slick";
-import MessageSocket from "./MessageSocket";
 import loadingImg from "../svg/Interwind-1s-200px.svg";
 import URL from "../configs/url.json";
 
@@ -134,75 +133,10 @@ class Main extends Component {
     );
   };
 
-  // prepareOption = () => {
-  //   const min = moment().year() - 10;
-  //   const max = moment().year() + 10;
-
-  //   let optionComponent = [];
-  //   for (let index = min; index < max; index++) {
-  //     optionComponent.push(index);
-  //   }
-
-  //   return optionComponent.map(item => (
-  //     <option key={item} value={item}>
-  //       {item}
-  //     </option>
-  //   ));
-  // };
-
   render() {
     return (
       <div className="container">
-        <div className="row">
-          <div className="col col-sm-2 col-lg-2">
-            <h1>Holidays!</h1>
-          </div>
-          <div className="refash-btn col offset-sm-4 col-sm-6 offset-lg-8 col-lg-2">
-            {/* <select
-              value={this.state.yearSeleced}
-              onChange={this.selectChange}
-              className="browser-default custom-select"
-              style={{ width: 100 }}
-            >
-              {this.prepareOption()}
-            </select> */}
-            {/* <button
-              type="button"
-              className="btn btn-primary"
-              onClick={this.getHolidayData}
-              style={{ marginLeft: 10 }}
-            >
-              Change year
-            </button> */}
-            {/* <img
-              className="synchronize-btn"
-              src="https://img.icons8.com/flat_round/32/000000/synchronize.png"
-              onClick={this.synchronizeData}
-              style={{ marginLeft: 10 }}
-              alt="synchronize-btn"
-            /> */}
-            <img
-              className="synchronize-btn"
-              src="https://img.icons8.com/flat_round/32/000000/synchronize.png"
-              onClick={() => window.location.reload(true)}
-              style={{ marginLeft: 10 }}
-              alt="synchronize-btn"
-            />
-          </div>
-        </div>
-
         <QueueAnim delay={300}>{this.renderCardGroup()}</QueueAnim>
-
-        <footer>
-          <div className="footer">
-            <p>
-              Powered by
-              <a href={URL.MyBlog}> Ball</a>
-            </p>
-          </div>
-        </footer>
-
-        <MessageSocket />
       </div>
     );
   }
