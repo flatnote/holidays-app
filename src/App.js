@@ -14,7 +14,7 @@ const { Header, Content, Footer } = Layout;
 
 const Holidays = () => {
   return (
-    <div>
+    <div style={{ marginBottom: 20 }}>
       <HomeAlert />
       <Main />
     </div>
@@ -25,7 +25,7 @@ class App extends Component {
   render() {
     return (
       <Router>
-        <div style={{ height: "100vh", width: "100vw", overflow: "hidden" }}>
+        <div style={{ height: "100vh", width: "100vw" }}>
           <Layout className="layout">
             <Header>
               <Navigation />

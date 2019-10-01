@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Lato:400,900);
+@import url(https://fonts.googleapis.com/css?family=Lato:400, 900);
 
 h1 {
   font-weight: 900;
@@ -89,9 +89,7 @@ code {
 }
 
 .footer {
-  position: fixed;
-  left: 0;
-  bottom: 1em;
+  padding-top: 1em;
   width: 100%;
   text-align: center;
 }
