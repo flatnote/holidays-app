@@ -118,7 +118,7 @@ class Main extends Component {
                         <span>{subItem.publicHolidayName} </span>
                         <span style={{ color: "#e44f24", fontWeight: 700 }}>
                           {moment(subItem.publicHolidayDate).format(
-                            "Do MMMM YYYY"
+                            "ddd Do MMMM YYYY"
                           )}
                         </span>
                       </li>
