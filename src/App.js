@@ -4,31 +4,49 @@ import Events from "./components/Events";
 import { withFirebase } from "./components/Firebase";
 import HomeAlert from "./components/HomeAlert";
 import Main from "./components/Main";
+import { withAuthentication, withAuthorization } from "./components/Session";
+import SignInSide from "./components/SignInSide";
+import SignUp from "./components/SignUp";
+import Container from "@material-ui/core/Container";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Typography from "@material-ui/core/Typography";
+
 import MessageSocket from "./components/MessageSocket";
 import Navigation from "./components/Navigation";
 import URL from "./configs/url.json";
-import "./App.css";
 import TemporaryDrawer from "./components/Drawers";
-import SignInSide from "./components/SignInSide";
-import SignUp from "./components/SignUp";
 
-const Holidays = props => {
-  return (
-    <div style={{ marginBottom: 20 }}>
-      <HomeAlert />
-      <Main {...props} />
-    </div>
-  );
-};
+class Holidays extends Component {
+  render() {
+    return (
+      <React.Fragment>
+        <CssBaseline />
+        {/* <Container> */}
+          <HomeAlert />
+          <Main {...this.props} />
+        {/* </Container> */}
+      </React.Fragment>
+    );
+  }
+}
+
+const condition = authUser => !!authUser;
 
 class App extends Component {
   render() {
     return (
-      <Router hi>
-        <Route exact path="/" component={Holidays} />
+      <Router>
+        <Route
+          exact
+          path="/"
+          component={withAuthorization(condition)(Holidays)}
+        />
+        <Route
+          path="/events"
+          component={withAuthorization(condition)(Events)}
+        />
         <Route path="/sign-in" component={withFirebase(SignInSide)} />
         <Route path="/sign-up" component={withFirebase(SignUp)} />
-        <Route path="/events" component={Events} />
         {/* <div style={{ height: "100vh", width: "100vw" }}>
           <Navigation />
           <Route exact path="/" component={Holidays} />
@@ -47,4 +65,4 @@ class App extends Component {
   }
 }
 
-export default withFirebase(App);
+export default withAuthentication(App);

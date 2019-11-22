@@ -1,3 +1,5 @@
+import Container from "@material-ui/core/Container";
+import CssBaseline from "@material-ui/core/CssBaseline";
 import axios from "axios";
 import moment from "moment";
 import QueueAnim from "rc-queue-anim";
@@ -5,13 +7,14 @@ import React, { Component } from "react";
 import Slider from "react-slick";
 import URL from "../configs/url.json";
 import loadingImg from "../svg/Interwind-1s-200px.svg";
+import BottomNavigation from "./BottomNavigation";
 import { withFirebase } from "./Firebase";
+import MenuAppBar from "./MenuAppBar";
+import { AuthUserContext } from "./Session";
 
 class Main extends Component {
   constructor(props) {
     super(props);
-
-    console.log(props.firebase);
 
     this.state = {
       holidaysData: [],
@@ -29,19 +32,6 @@ class Main extends Component {
 
   async componentDidMount() {
     this.getHolidayData();
-    const { firebase, history } = this.props;
-    // console.log(history);
-    // firebase.onAuthUserListener(
-    //   authUser => {
-    //     console.log(authUser);
-    //     // if (authUser) {
-    //     //   this.props.history.push(ROUTES.SIGN_IN);
-    //     // }
-    //   },
-    //   () => {
-    //     history.push("/sign-in");
-    //   }
-    // );
     // this.props.firebase.askForPermissioToReceiveNotifications();
   }
 
@@ -102,16 +92,15 @@ class Main extends Component {
     };
 
     return loading ? (
-      <img
-        src={loadingImg}
-        style={{
-          display: "block",
-          marginLeft: "auto",
-          marginRight: "auto",
-          width: "50%"
-        }}
-        alt="loading"
-      />
+      <div className="center">
+        <img
+          src={loadingImg}
+          style={{
+            margin: "-100px 0 0 -100px"
+          }}
+          alt="loading"
+        />
+      </div>
     ) : (
       <div key="animate1">
         <Slider {...settings}>
@@ -151,9 +140,24 @@ class Main extends Component {
 
   render() {
     return (
-      <div className="container">
-        <QueueAnim delay={300}>{this.renderCardGroup()}</QueueAnim>
-      </div>
+      <AuthUserContext.Consumer>
+        {authUser =>
+          authUser ? (
+            <div>
+              <MenuAppBar {...this.props} auth />
+              <CssBaseline />
+              <Container>
+                <QueueAnim delay={300}>{this.renderCardGroup()}</QueueAnim>
+              </Container>
+              <div style={{ marginTop: "3em" }}>
+                <BottomNavigation />
+              </div>
+            </div>
+          ) : (
+            <MenuAppBar {...this.props} />
+          )
+        }
+      </AuthUserContext.Consumer>
     );
   }
 }

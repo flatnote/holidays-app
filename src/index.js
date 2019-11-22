@@ -1,11 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import "./index.css";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
-import "../node_modules/sweetalert2/dist/sweetalert2.min.css";
 import App from "./App";
 import Firebase, { FirebaseContext } from "./components/Firebase";
-import "./index.css";
 import * as serviceWorker from "./serviceWorker";
 
 ReactDOM.render(
