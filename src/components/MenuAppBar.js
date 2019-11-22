@@ -40,6 +40,11 @@ export default function MenuAppBar(props) {
     setAnchorEl(null);
   };
 
+  const handleLogout = () => {
+    const { firebase } = props;
+    firebase.doSignOut()
+  };
+
   return (
     <div className={classes.root}>
       <AppBar position="static">
@@ -83,7 +88,7 @@ export default function MenuAppBar(props) {
               >
                 <MenuItem onClick={handleClose}>Profile</MenuItem>
                 <MenuItem onClick={handleClose}>My account</MenuItem>
-                <MenuItem onClick={handleClose}>Log out</MenuItem>
+                <MenuItem onClick={handleLogout}>Log out</MenuItem>
               </Menu>
             </div>
           )}

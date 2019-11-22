@@ -12,6 +12,7 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import React from "react";
 import { Link as RouterLink } from "react-router-dom";
 import Copyright from "./Copyright";
+import Snackbar from "@material-ui/core/Snackbar";
 
 const useStyles = makeStyles(theme => ({
   "@global": {
@@ -42,6 +43,16 @@ export default function SignUp(props) {
   const { firebase } = props;
   const classes = useStyles();
 
+  const [submitting, setSubmitting] = React.useState(null);
+  const [state, setState] = React.useState({
+    open: false,
+    vertical: "top",
+    horizontal: "center",
+    errorMessage: null
+  });
+
+  const { vertical, horizontal, open, errorMessage } = state;
+
   const handleSubmit = event => {
     event.preventDefault();
     const firstName = document.getElementById("firstName").value;
@@ -51,11 +62,39 @@ export default function SignUp(props) {
 
     console.log(firstName, lastName, email, password);
 
-    firebase.doCreateUserWithEmailAndPassword(email, password);
+    setSubmitting(true);
+    firebase
+      .doCreateUserWithEmailAndPassword(email, password)
+      .then(response => {
+        console.log(response);
+        setState({ ...state, open: true, errorMessage: "Sign up success!" });
+        setSubmitting(false);
+      })
+      .catch(error => {
+        console.log(error);
+        const { message } = error;
+        setState({ ...state, open: true, errorMessage: message });
+        setSubmitting(false);
+      });
+  };
+
+  const handleClose = () => {
+    setState({ ...state, open: false });
   };
 
   return (
     <Container component="main" maxWidth="xs">
+      <Snackbar
+        anchorOrigin={{ vertical, horizontal }}
+        key={`${vertical},${horizontal}`}
+        open={open}
+        onClose={handleClose}
+        ContentProps={{
+          "aria-describedby": "message-id"
+        }}
+        message={<span id="message-id">{errorMessage}</span>}
+        autoHideDuration={6000}
+      />
       <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
@@ -126,6 +165,7 @@ export default function SignUp(props) {
             variant="contained"
             color="primary"
             className={classes.submit}
+            disabled={submitting}
           >
             Sign Up
           </Button>
