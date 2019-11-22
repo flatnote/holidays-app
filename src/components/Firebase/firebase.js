@@ -4,13 +4,14 @@ import "firebase/database";
 import "firebase/messaging";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyC5bPhG7665uJceRNV0v3yrbNqTEBrlH2Y",
-  authDomain: "react-chat-628e6.firebaseapp.com",
-  databaseURL: "https://react-chat-628e6.firebaseio.com",
-  projectId: "react-chat-628e6",
-  storageBucket: "react-chat-628e6.appspot.com",
-  messagingSenderId: "647454043009",
-  appId: "1:647454043009:web:aee4e243cdcfcad2"
+  apiKey: "AIzaSyD68cwiSy_j9GGUCGWo8zJCNkTE5UPvVvw",
+  authDomain: "holidays-a62c9.firebaseapp.com",
+  databaseURL: "https://holidays-a62c9.firebaseio.com",
+  projectId: "holidays-a62c9",
+  storageBucket: "holidays-a62c9.appspot.com",
+  messagingSenderId: "165226763574",
+  appId: "1:165226763574:web:cf1e9e857ee2fe8f428f97",
+  measurementId: "G-KTTMTJ7P8L"
 };
 
 class Firebase {
@@ -52,19 +53,19 @@ class Firebase {
         this.user(authUser.uid)
           .once("value")
           .then(snapshot => {
-            const dbUser = snapshot.val();
+            // const dbUser = snapshot.val();
 
-            // default empty roles
-            if (!dbUser.roles) {
-              dbUser.roles = [];
-            }
+            // // default empty roles
+            // if (!dbUser.roles) {
+            //   dbUser.roles = [];
+            // }
 
-            // merge auth and db user
-            authUser = {
-              uid: authUser.uid,
-              email: authUser.email,
-              ...dbUser
-            };
+            // // merge auth and db user
+            // authUser = {
+            //   uid: authUser.uid,
+            //   email: authUser.email,
+            //   ...dbUser
+            // };
 
             next(authUser);
           });

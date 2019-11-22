@@ -3,12 +3,15 @@ import moment from "moment";
 import QueueAnim from "rc-queue-anim";
 import React, { Component } from "react";
 import Slider from "react-slick";
-import loadingImg from "../svg/Interwind-1s-200px.svg";
 import URL from "../configs/url.json";
+import loadingImg from "../svg/Interwind-1s-200px.svg";
+import { withFirebase } from "./Firebase";
 
 class Main extends Component {
   constructor(props) {
     super(props);
+
+    console.log(props.firebase);
 
     this.state = {
       holidaysData: [],
@@ -24,10 +27,23 @@ class Main extends Component {
     this.synchronizeData = this.synchronizeData.bind(this);
   }
 
-  componentDidMount = () => {
+  async componentDidMount() {
     this.getHolidayData();
+    const { firebase, history } = this.props;
+    // console.log(history);
+    // firebase.onAuthUserListener(
+    //   authUser => {
+    //     console.log(authUser);
+    //     // if (authUser) {
+    //     //   this.props.history.push(ROUTES.SIGN_IN);
+    //     // }
+    //   },
+    //   () => {
+    //     history.push("/sign-in");
+    //   }
+    // );
     // this.props.firebase.askForPermissioToReceiveNotifications();
-  };
+  }
 
   synchronizeData = async () => {
     this.setState({ loading: true });
@@ -142,4 +158,4 @@ class Main extends Component {
   }
 }
 
-export default Main;
+export default withFirebase(Main);

@@ -1,6 +1,6 @@
 {
-  "short_name": "Holidays App",
   "name": "Holidays App",
+  "short_name": "Holidays",
   "icons": [
     {
       "src": "beach-umbrella-icon-96.png",
