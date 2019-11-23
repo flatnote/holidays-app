@@ -9,6 +9,7 @@ import { withAuthentication, withAuthorization } from "./components/Session";
 import SignInSide from "./components/SignInSide";
 import SignUp from "./components/SignUp";
 import MenuAppBar from "./components/MenuAppBar";
+import { AuthUserContext } from "./components/Session";
 
 class Holidays extends Component {
   render() {
@@ -23,12 +24,24 @@ class Holidays extends Component {
 
 const condition = authUser => !!authUser;
 
+class WrapMenuAppBar extends Component {
+  render() {
+    return (
+      <AuthUserContext.Consumer>
+        {authUser => (authUser ? <MenuAppBar {...this.props} auth /> : "")}
+      </AuthUserContext.Consumer>
+    );
+  }
+}
+
+const WrapMenuAppBarFirebase = withFirebase(WrapMenuAppBar)
+
 class App extends Component {
   render() {
     return (
       <Router>
         <CssBaseline />
-        <MenuAppBar {...this.props} auth />
+        <WrapMenuAppBarFirebase />
         <Route
           exact
           path="/"
