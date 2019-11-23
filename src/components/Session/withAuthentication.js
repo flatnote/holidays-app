@@ -1,5 +1,4 @@
 import React from "react";
-import ReactLoading from "react-loading";
 import { withFirebase } from "../Firebase";
 import AuthUserContext from "./context";
 import CircularIndeterminate from "../CircularIndeterminate";
@@ -8,6 +7,8 @@ const withAuthentication = Component => {
   class WithAuthentication extends React.Component {
     constructor(props) {
       super(props);
+
+      console.log(props)
 
       this.state = {
         authUser: null,
@@ -32,7 +33,7 @@ const withAuthentication = Component => {
 
     isLoading = () => {
       if (this.state.loading) {
-        return <LoadingScreen type="spin" color="#rgba(0,0,0,.75)" />;
+        return <LoadingScreen />;
       } else {
         return (
           <AuthUserContext.Provider value={this.state.authUser}>
@@ -52,7 +53,7 @@ const withAuthentication = Component => {
 
 const LoadingScreen = ({ type, color }) => {
   return (
-    <div className="center">
+    <div className="center" style={{margin: "-50px 0 0 -25px"}}>
       <CircularIndeterminate />
     </div>
   );

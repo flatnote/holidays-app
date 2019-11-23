@@ -1,3 +1,4 @@
+import CssBaseline from "@material-ui/core/CssBaseline";
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import Events from "./components/Events";
@@ -7,24 +8,14 @@ import Main from "./components/Main";
 import { withAuthentication, withAuthorization } from "./components/Session";
 import SignInSide from "./components/SignInSide";
 import SignUp from "./components/SignUp";
-import Container from "@material-ui/core/Container";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Typography from "@material-ui/core/Typography";
-
-import MessageSocket from "./components/MessageSocket";
-import Navigation from "./components/Navigation";
-import URL from "./configs/url.json";
-import TemporaryDrawer from "./components/Drawers";
+import MenuAppBar from "./components/MenuAppBar";
 
 class Holidays extends Component {
   render() {
     return (
       <React.Fragment>
-        <CssBaseline />
-        {/* <Container> */}
-          <HomeAlert />
-          <Main {...this.props} />
-        {/* </Container> */}
+        <HomeAlert />
+        <Main {...this.props} />
       </React.Fragment>
     );
   }
@@ -36,6 +27,8 @@ class App extends Component {
   render() {
     return (
       <Router>
+        <CssBaseline />
+        <MenuAppBar {...this.props} auth />
         <Route
           exact
           path="/"

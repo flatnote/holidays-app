@@ -7,9 +7,7 @@ import React, { Component } from "react";
 import Slider from "react-slick";
 import URL from "../configs/url.json";
 import loadingImg from "../svg/Interwind-1s-200px.svg";
-import BottomNavigation from "./BottomNavigation";
 import { withFirebase } from "./Firebase";
-import MenuAppBar from "./MenuAppBar";
 import { AuthUserContext } from "./Session";
 
 class Main extends Component {
@@ -144,17 +142,13 @@ class Main extends Component {
         {authUser =>
           authUser ? (
             <div>
-              <MenuAppBar {...this.props} auth />
               <CssBaseline />
               <Container>
                 <QueueAnim delay={300}>{this.renderCardGroup()}</QueueAnim>
               </Container>
-              <div style={{ marginTop: "3em" }}>
-                <BottomNavigation />
-              </div>
             </div>
           ) : (
-            <MenuAppBar {...this.props} />
+            "Don't have permission"
           )
         }
       </AuthUserContext.Consumer>
