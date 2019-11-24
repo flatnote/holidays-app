@@ -6,8 +6,8 @@ class index extends Component {
   render() {
     return (
       <div>
-        <AddEvent />
         <ListEvent />
+        <AddEvent />
       </div>
     );
   }

@@ -1,77 +1,151 @@
-import Fab from "@material-ui/core/Fab";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
-import Zoom from "@material-ui/core/Zoom";
-import AddIcon from "@material-ui/icons/Add";
-import EditIcon from "@material-ui/icons/Edit";
+import Avatar from "@material-ui/core/Avatar";
+import Card from "@material-ui/core/Card";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
+import CardHeader from "@material-ui/core/CardHeader";
+import CardMedia from "@material-ui/core/CardMedia";
+import Collapse from "@material-ui/core/Collapse";
+import { red } from "@material-ui/core/colors";
+import IconButton from "@material-ui/core/IconButton";
+import { makeStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
+import clsx from "clsx";
 import React, { Component } from "react";
 import { withFirebase } from "../Firebase";
 
-const buttonStyle = {
-  margin: "10px 15px",
-  maxWidth: "120px"
-};
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
+
+import axios from "axios";
 
 const useStyles = makeStyles(theme => ({
   root: {
     backgroundColor: theme.palette.background.paper,
-    position: "relative",
+    position: "relative"
   },
   fab: {
     position: "absolute",
     bottom: theme.spacing(2),
     right: theme.spacing(2)
+  },
+  card: {},
+  media: {
+    height: 0,
+    paddingTop: "56.25%" // 16:9
+  },
+  expand: {
+    transform: "rotate(0deg)",
+    marginLeft: "auto",
+    transition: theme.transitions.create("transform", {
+      duration: theme.transitions.duration.shortest
+    })
+  },
+  expandOpen: {
+    transform: "rotate(180deg)"
+  },
+  avatar: {
+    backgroundColor: red[500]
   }
 }));
 
-function FloatingActionButtonZoom() {
+function RecipeReviewCard(props) {
   const classes = useStyles();
-  const theme = useTheme();
-  const [value, setValue] = React.useState(0);
+  const [expanded, setExpanded] = React.useState(false);
 
-  const transitionDuration = {
-    enter: theme.transitions.duration.enteringScreen,
-    exit: theme.transitions.duration.leavingScreen
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
   };
 
-  const fabs = [
-    {
-      color: "primary",
-      className: classes.fab,
-      icon: <AddIcon />,
-      label: "Add"
-    },
-    {
-      color: "secondary",
-      className: classes.fab,
-      icon: <EditIcon />,
-      label: "Edit"
-    }
-  ];
+  const handleMenu = event => {
+    setAnchorEl(event.currentTarget);
+  };
 
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const { cardData } = props;
+  const { imgData } = cardData;
+  console.log(imgData.url);
   return (
-    <div className={classes.root}>
-      {fabs.map((fab, index) => (
-        <Zoom
-          key={fab.color}
-          in={value === index}
-          timeout={transitionDuration}
-          style={{
-            transitionDelay: `${
-              value === index ? transitionDuration.exit : 0
-            }ms`
-          }}
-          unmountOnExit
+    <Card className={classes.card}>
+      <CardHeader
+        avatar={
+          <Avatar aria-label="recipe" className={classes.avatar}>
+            R
+          </Avatar>
+        }
+        action={
+          <div>
+            <IconButton aria-label="settings" onClick={handleMenu}>
+              <MoreVertIcon />
+            </IconButton>
+            <Menu
+              id="menu-appbar"
+              anchorEl={anchorEl}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right"
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right"
+              }}
+              open={open}
+              onClose={handleClose}
+            >
+              <MenuItem onClick={handleClose}>Edit</MenuItem>
+              <MenuItem onClick={handleClose}>Delete</MenuItem>
+            </Menu>
+          </div>
+        }
+        title={
+          <Typography gutterBottom variant="h5" component="h2">
+            {cardData.title}
+          </Typography>
+        }
+        subheader="September 14, 2016"
+      />
+      <CardMedia
+        className={classes.media}
+        image={imgData.url}
+        title="Paella dish"
+      />
+      <CardContent>
+        <Typography variant="body2" color="textSecondary" component="p">
+          Description
+        </Typography>
+      </CardContent>
+      {/* <CardActions disableSpacing>
+        <IconButton aria-label="add to favorites">
+          <FavoriteIcon />
+        </IconButton>
+        <IconButton aria-label="share">
+          <ShareIcon />
+        </IconButton>
+        <IconButton
+          className={clsx(classes.expand, {
+            [classes.expandOpen]: expanded
+          })}
+          onClick={handleExpandClick}
+          aria-expanded={expanded}
+          aria-label="show more"
         >
-          <Fab
-            aria-label={fab.label}
-            className={fab.className}
-            color={fab.color}
-          >
-            {fab.icon}
-          </Fab>
-        </Zoom>
-      ))}
-    </div>
+          <ExpandMoreIcon />
+        </IconButton>
+      </CardActions> */}
+      {/* <Collapse in={expanded} timeout="auto" unmountOnExit>
+        <CardContent>
+          <Typography paragraph>Description:</Typography>
+        </CardContent>
+      </Collapse> */}
+    </Card>
   );
 }
 
@@ -84,8 +158,12 @@ class ListEvent extends Component {
     this.fetchData();
   }
 
-  fetchData = () => {
+  fetchData = async () => {
     const { firebase } = this.props;
+
+    const randomImgs = (
+      await axios.get("https://picsum.photos/v2/list?page=2&limit=100")
+    ).data;
 
     const eventsRef = firebase
       .events()
@@ -100,12 +178,13 @@ class ListEvent extends Component {
         events.push({ key, ...valueObject[key] })
       );
 
-      events = events.map(event => {
+      events = events.map((event, index) => {
         return {
           key: event.key,
           title: event.title,
           description: event.description,
-          date: event.date
+          date: event.date,
+          imgData: randomImgs[index]
         };
       });
       this.setState({ events });
@@ -119,35 +198,7 @@ class ListEvent extends Component {
         {events.length ? (
           events.map(event => (
             <div className="list-group" key={event.key}>
-              <div className="list-group-item list-group-item-action flex-column align-items-start">
-                <div className="d-flex w-100 justify-content-between">
-                  <h5 className="mb-1">{event.title}</h5>
-                  <small>{event.date}</small>
-                </div>
-
-                <p className="mb-1">{event.description}</p>
-
-                <div className="controls row">
-                  <button
-                    className="btn btn-outline-warning col"
-                    data-toggle="modal"
-                    data-target="#myModal"
-                    type="button"
-                    style={buttonStyle}
-                    onClick={() => this.handleEdit(event.key)}
-                  >
-                    Edit Event
-                  </button>
-
-                  <button
-                    className="btn btn-outline-danger col"
-                    style={buttonStyle}
-                    onClick={() => this.handleDelete(event.key)}
-                  >
-                    Delete Event
-                  </button>
-                </div>
-              </div>
+              <RecipeReviewCard cardData={event} />
             </div>
           ))
         ) : (
@@ -155,8 +206,6 @@ class ListEvent extends Component {
             OOOPSY: NO EVENTS REGISTERED
           </div>
         )}
-
-        <FloatingActionButtonZoom />
       </div>
     );
   }
