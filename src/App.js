@@ -28,7 +28,7 @@ class WrapMenuAppBar extends Component {
   render() {
     return (
       <AuthUserContext.Consumer>
-        {authUser => (authUser ? <MenuAppBar {...this.props} auth /> : "")}
+        {authUser => (authUser ? <MenuAppBar {...this.props} auth authUser={authUser} /> : "")}
       </AuthUserContext.Consumer>
     );
   }
@@ -53,19 +53,6 @@ class App extends Component {
         />
         <Route path="/sign-in" component={withFirebase(SignInSide)} />
         <Route path="/sign-up" component={withFirebase(SignUp)} />
-        {/* <div style={{ height: "100vh", width: "100vw" }}>
-          <Navigation />
-          <Route exact path="/" component={Holidays} />
-          <Route path="/events" component={Events} />
-          <TemporaryDrawer />
-          <MessageSocket />
-          <div className="footer">
-            <p>
-              Powered by
-              <a href={URL.MyBlog}> Ball</a>
-            </p>
-          </div>
-        </div> */}
       </Router>
     );
   }

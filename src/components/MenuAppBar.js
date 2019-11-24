@@ -17,6 +17,7 @@ import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
 import MenuIcon from "@material-ui/icons/Menu";
 import React from "react";
 import { Link } from "react-router-dom";
+import Avatar from "@material-ui/core/Avatar";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -45,7 +46,9 @@ export default function MenuAppBar(props) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
-  const { auth } = props;
+  const { auth, authUser } = props;
+
+  const { photoURL } = authUser;
 
   const handleMenu = event => {
     setAnchorEl(event.currentTarget);
@@ -64,7 +67,8 @@ export default function MenuAppBar(props) {
     top: false,
     left: false,
     bottom: false,
-    right: false
+    right: false,
+    currentTitle: "Holidays"
   });
 
   const toggleDrawer = (side, open) => event => {
@@ -87,8 +91,8 @@ export default function MenuAppBar(props) {
       <List>
         {[
           {
-            key: "Home",
-            text: "Home",
+            key: "Holidays",
+            text: "Holidays",
             path: "/"
           },
           {
@@ -97,7 +101,14 @@ export default function MenuAppBar(props) {
             path: "/events"
           }
         ].map((item, index) => (
-          <Link to={item.path} key={item.key}>
+          <Link
+            to={item.path}
+            key={item.key}
+            onClick={() => {
+              setState({ ...state, currentTitle: item.text });
+              console.log(item.text, state);
+            }}
+          >
             <ListItem button>
               <ListItemIcon>
                 {index % 2 === 0 ? <HomeIcon /> : <CalendarTodayIcon />}
@@ -125,7 +136,7 @@ export default function MenuAppBar(props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" className={classes.title}>
-            Holidays
+            {state.currentTitle}
           </Typography>
           {auth && (
             <div>
@@ -136,7 +147,7 @@ export default function MenuAppBar(props) {
                 onClick={handleMenu}
                 color="inherit"
               >
-                <AccountCircle />
+                {photoURL ? <Avatar src={photoURL} /> : <AccountCircle />}
               </IconButton>
               <Menu
                 id="menu-appbar"

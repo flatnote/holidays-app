@@ -30,7 +30,7 @@ class Main extends Component {
 
   async componentDidMount() {
     this.getHolidayData();
-    // this.props.firebase.askForPermissioToReceiveNotifications();
+    this.props.firebase.askForPermissioToReceiveNotifications();
   }
 
   synchronizeData = async () => {

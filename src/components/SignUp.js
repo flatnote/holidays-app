@@ -5,14 +5,14 @@ import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Grid from "@material-ui/core/Grid";
 import Link from "@material-ui/core/Link";
+import Snackbar from "@material-ui/core/Snackbar";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import React from "react";
 import { Link as RouterLink } from "react-router-dom";
+import Logo from "../svg/hammock.svg";
 import Copyright from "./Copyright";
-import Snackbar from "@material-ui/core/Snackbar";
 
 const useStyles = makeStyles(theme => ({
   "@global": {
@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main
+    backgroundColor: theme.palette.grey[50]
   },
   form: {
     width: "100%", // Fix IE 11 issue.
@@ -98,7 +98,7 @@ export default function SignUp(props) {
       <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
+          <img src={Logo} height="100%" width="80%" alt="logo" />
         </Avatar>
         <Typography component="h1" variant="h5">
           Sign up

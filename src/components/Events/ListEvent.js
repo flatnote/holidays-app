@@ -1,3 +1,8 @@
+import Fab from "@material-ui/core/Fab";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
+import Zoom from "@material-ui/core/Zoom";
+import AddIcon from "@material-ui/icons/Add";
+import EditIcon from "@material-ui/icons/Edit";
 import React, { Component } from "react";
 import { withFirebase } from "../Firebase";
 
@@ -5,6 +10,70 @@ const buttonStyle = {
   margin: "10px 15px",
   maxWidth: "120px"
 };
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    backgroundColor: theme.palette.background.paper,
+    position: "relative",
+  },
+  fab: {
+    position: "absolute",
+    bottom: theme.spacing(2),
+    right: theme.spacing(2)
+  }
+}));
+
+function FloatingActionButtonZoom() {
+  const classes = useStyles();
+  const theme = useTheme();
+  const [value, setValue] = React.useState(0);
+
+  const transitionDuration = {
+    enter: theme.transitions.duration.enteringScreen,
+    exit: theme.transitions.duration.leavingScreen
+  };
+
+  const fabs = [
+    {
+      color: "primary",
+      className: classes.fab,
+      icon: <AddIcon />,
+      label: "Add"
+    },
+    {
+      color: "secondary",
+      className: classes.fab,
+      icon: <EditIcon />,
+      label: "Edit"
+    }
+  ];
+
+  return (
+    <div className={classes.root}>
+      {fabs.map((fab, index) => (
+        <Zoom
+          key={fab.color}
+          in={value === index}
+          timeout={transitionDuration}
+          style={{
+            transitionDelay: `${
+              value === index ? transitionDuration.exit : 0
+            }ms`
+          }}
+          unmountOnExit
+        >
+          <Fab
+            aria-label={fab.label}
+            className={fab.className}
+            color={fab.color}
+          >
+            {fab.icon}
+          </Fab>
+        </Zoom>
+      ))}
+    </div>
+  );
+}
 
 class ListEvent extends Component {
   state = {
@@ -86,6 +155,8 @@ class ListEvent extends Component {
             OOOPSY: NO EVENTS REGISTERED
           </div>
         )}
+
+        <FloatingActionButtonZoom />
       </div>
     );
   }

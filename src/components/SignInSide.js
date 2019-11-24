@@ -3,21 +3,22 @@ import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Grid from "@material-ui/core/Grid";
+import Icon from "@material-ui/core/Icon";
 import Link from "@material-ui/core/Link";
 import Paper from "@material-ui/core/Paper";
 import Snackbar from "@material-ui/core/Snackbar";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import React from "react";
-import { Link as RouterLink } from "react-router-dom";
-import Copyright from "./Copyright";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import ErrorIcon from "@material-ui/icons/Error";
 import InfoIcon from "@material-ui/icons/Info";
 import WarningIcon from "@material-ui/icons/Warning";
-import { amber, green } from "@material-ui/core/colors";
+import { loadCSS } from "fg-loadcss";
+import React from "react";
+import { Link as RouterLink } from "react-router-dom";
+import Logo from "../svg/hammock.svg";
+import Copyright from "./Copyright";
 
 const variantIcon = {
   success: CheckCircleIcon,
@@ -45,7 +46,7 @@ const useStyles = makeStyles(theme => ({
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main
+    backgroundColor: theme.palette.grey[50]
   },
   form: {
     width: "100%", // Fix IE 11 issue.
@@ -61,12 +62,19 @@ export default function SignInSide(props) {
 
   const classes = useStyles();
 
+  React.useEffect(() => {
+    loadCSS(
+      "https://use.fontawesome.com/releases/v5.1.0/css/all.css",
+      document.querySelector("#font-awesome-css")
+    );
+  }, []);
+
   const [submitting, setSubmitting] = React.useState(null);
   const [state, setState] = React.useState({
     open: false,
     vertical: "top",
     horizontal: "center",
-    errorMessage: null,
+    errorMessage: null
   });
 
   const { vertical, horizontal, open, errorMessage, variant } = state;
@@ -92,7 +100,7 @@ export default function SignInSide(props) {
         setState({
           ...state,
           open: true,
-          errorMessage: message,
+          errorMessage: message
         });
         setSubmitting(false);
       });
@@ -100,6 +108,15 @@ export default function SignInSide(props) {
 
   const handleClose = () => {
     setState({ ...state, open: false });
+  };
+
+  const handleSIgnInGoogle = () => {
+    firebase.doSignInWithGoogle().then(response => {
+      console.log(response);
+      if (response) {
+        history.push("/");
+      }
+    });
   };
 
   return (
@@ -121,7 +138,7 @@ export default function SignInSide(props) {
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>
-            <LockOutlinedIcon />
+            <img src={Logo} height="100%" width="80%" alt="logo" />
           </Avatar>
           <Typography component="h1" variant="h5">
             Sign in to Holidays app !
@@ -163,6 +180,15 @@ export default function SignInSide(props) {
               disabled={submitting}
             >
               Sign In
+            </Button>
+            <Button
+              fullWidth
+              variant="contained"
+              className={classes.submit}
+              onClick={handleSIgnInGoogle}
+              startIcon={<Icon className="fab fa-google" />}
+            >
+              Sign In with Google
             </Button>
             <Grid container>
               <Grid item xs>
