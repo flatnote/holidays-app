@@ -4,7 +4,7 @@ import "firebase/database";
 import "firebase/messaging";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyD68cwiSy_j9GGUCGWo8zJCNkTE5UPvVvw",
+  apiKey: process.env.FIREBASE_API_KEY,
   authDomain: "holidays-a62c9.firebaseapp.com",
   databaseURL: "https://holidays-a62c9.firebaseio.com",
   projectId: "holidays-a62c9",
@@ -21,6 +21,7 @@ class Firebase {
     this.auth = app.auth();
     this.db = app.database();
     this.googleProvider = new app.auth.GoogleAuthProvider();
+    this.messaging = app.messaging();
   }
 
   database = () => this.db;
@@ -76,15 +77,20 @@ class Firebase {
 
   askForPermissioToReceiveNotifications = async () => {
     try {
-      const messaging = app.messaging();
-      await messaging.requestPermission();
-      const token = await messaging.getToken();
-      // console.log("token is:", token);
+      await this.messaging.requestPermission();
+      const token = await this.messaging.getToken();
+      console.log("token is:", token);
 
       return token;
     } catch (error) {
       console.error(error);
     }
+  };
+
+  onMessage = () => {
+    this.messaging.onMessage(payload => {
+      console.log("Message received. ", payload);
+    });
   };
 }
 
