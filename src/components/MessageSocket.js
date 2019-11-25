@@ -2,22 +2,15 @@ import React, { Component } from "react";
 import { Launcher } from "react-chat-window";
 import socketIOClient from "socket.io-client";
 import { withFirebase } from "./Firebase";
+import { AuthUserContext } from "./Session";
 
 const socketEndpoint = "https://socket-holidays-chat.herokuapp.com";
 
-class Demo extends Component {
+class MessageSocket extends Component {
   constructor() {
     super();
     this.state = {
-      messageList: [
-        {
-          author: "them",
-          type: "text",
-          data: {
-            text: "some text"
-          }
-        }
-      ],
+      messageList: [],
       endpoint: socketEndpoint,
       messages: []
     };
@@ -25,36 +18,48 @@ class Demo extends Component {
   }
 
   componentDidMount = () => {
-    const { firebase } = this.props;
-    const messagesRef = firebase
-      .chatMessage()
-      .orderByKey()
-      .limitToLast(100);
+    // const { firebase } = this.props;
 
-    messagesRef.on("value", snapshot => {
-      let messagesObj = snapshot.val();
-      let messages = [];
-      Object.keys(messagesObj).forEach(key => messages.push(messagesObj[key]));
-      messages = messages.map(message => {
-        // console.log(message);
-        return { text: message.text, user: message.user, id: message.key };
-      });
-      this.setState({ messages: messages });
-    });
+    // const messagesRef = firebase
+    //   .chatMessage()
+    //   .orderByKey()
+    //   .limitToLast(100);
+
+    // messagesRef.on("value", snapshot => {
+    //   let messagesObj = snapshot.val();
+    //   let messages = [];
+    //   Object.keys(messagesObj).forEach(key => messages.push(messagesObj[key]));
+    //   messages = messages.map(message => {
+    //     // console.log(message);
+    //     return { text: message.text, user: message.user, id: message.key };
+    //   });
+    //   this.setState({ messages: messages });
+    // });
     this.socketResponse();
   };
 
   // รอรับข้อมูลเมื่อ server มีการ update
   socketResponse = () => {
+    const { authUser } = this.props;
     const { endpoint } = this.state;
     const socket = socketIOClient(endpoint);
     socket.on("new-message", messageList => {
-      this.setState({ messageList });
+      console.log(messageList);
+      this.setState({
+        messageList: messageList.map(item => {
+          return {
+            ...item,
+            author: item.author === authUser.email ? "me" : "them"
+          };
+        })
+      });
     });
   };
 
   _onMessageWasSent(message) {
+    const { authUser } = this.props;
     const { endpoint } = this.state;
+    message.author = authUser.email;
     const socket = socketIOClient(endpoint);
     socket.emit("sent-message", message);
   }
@@ -66,9 +71,8 @@ class Demo extends Component {
 
   render() {
     const { messageList } = this.state;
-    // console.log(messages);
     return (
-      <div className="customLinkColor" style={{ zIndex: 100 }}>
+      <div style={{ zIndex: 100 }}>
         <Launcher
           agentProfile={{
             teamName: "Holidays-Chat",
@@ -88,4 +92,22 @@ class Demo extends Component {
   }
 }
 
-export default withFirebase(Demo);
+const condition = authUser => !!authUser;
+
+class ProvideAuthUser extends Component {
+  render() {
+    return (
+      <AuthUserContext.Consumer>
+        {authUser =>
+          condition(authUser) ? (
+            <MessageSocket {...this.props} authUser={authUser} />
+          ) : (
+            ""
+          )
+        }
+      </AuthUserContext.Consumer>
+    );
+  }
+}
+
+export default withFirebase(ProvideAuthUser);

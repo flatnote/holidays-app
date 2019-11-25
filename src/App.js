@@ -10,6 +10,7 @@ import SignInSide from "./components/SignInSide";
 import SignUp from "./components/SignUp";
 import MenuAppBar from "./components/MenuAppBar";
 import { AuthUserContext } from "./components/Session";
+import MessageSocket from "./components/MessageSocket";
 
 class Holidays extends Component {
   render() {
@@ -28,13 +29,21 @@ class WrapMenuAppBar extends Component {
   render() {
     return (
       <AuthUserContext.Consumer>
-        {authUser => (authUser ? <MenuAppBar {...this.props} auth authUser={authUser} /> : "")}
+        {authUser =>
+          authUser ? (
+            <MenuAppBar {...this.props} auth authUser={authUser} />
+          ) : (
+            ""
+          )
+        }
       </AuthUserContext.Consumer>
     );
   }
 }
 
-const WrapMenuAppBarFirebase = withFirebase(WrapMenuAppBar)
+const WrapMenuAppBarFirebase = withFirebase(WrapMenuAppBar);
+
+const WrapAuthenMessageComponent = withAuthorization(condition)(MessageSocket);
 
 class App extends Component {
   render() {
@@ -53,6 +62,7 @@ class App extends Component {
         />
         <Route path="/sign-in" component={withFirebase(SignInSide)} />
         <Route path="/sign-up" component={withFirebase(SignUp)} />
+        <WrapAuthenMessageComponent />
       </Router>
     );
   }
