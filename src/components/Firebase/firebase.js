@@ -4,7 +4,7 @@ import "firebase/database";
 import "firebase/messaging";
 
 const firebaseConfig = {
-  apiKey: process.env.FIREBASE_API_KEY,
+  apiKey: "AIzaSyD68cwiSy_j9GGUCGWo8zJCNkTE5UPvVvw",
   authDomain: "holidays-a62c9.firebaseapp.com",
   databaseURL: "https://holidays-a62c9.firebaseio.com",
   projectId: "holidays-a62c9",
