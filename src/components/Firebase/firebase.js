@@ -4,6 +4,8 @@ import "firebase/database";
 import "firebase/messaging";
 import "firebase/firestore";
 
+import { module } from "./detectDevice";
+
 const firebaseConfig = {
   apiKey: "AIzaSyD68cwiSy_j9GGUCGWo8zJCNkTE5UPvVvw",
   authDomain: "holidays-a62c9.firebaseapp.com",
@@ -81,10 +83,22 @@ class Firebase {
       const token = await this.messaging.getToken();
       // console.log("token is:", token);
 
+      const e = module.init();
+      
       this.firestore
         .collection("fcmTokens")
         .doc(token)
-        .set({ uid: this.auth.currentUser.uid });
+        .set({
+          uid: this.auth.currentUser.uid,
+          navigator: {
+            userAgent: navigator.userAgent,
+            appVersion: navigator.appVersion,
+            platform: navigator.platform,
+            vendor: navigator.vendor
+          },
+          os: { ...e.os },
+          browser: { ...e.browser }
+        });
 
       return token;
     } catch (error) {

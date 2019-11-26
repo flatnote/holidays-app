@@ -111,12 +111,26 @@ export default function SignInSide(props) {
   };
 
   const handleSIgnInGoogle = () => {
-    firebase.doSignInWithGoogle().then(response => {
-      console.log(response);
-      if (response) {
-        history.push("/");
-      }
-    });
+    setSubmitting(true);
+    firebase
+      .doSignInWithGoogle()
+      .then(response => {
+        console.log(response);
+        if (response) {
+          history.push("/");
+        }
+        setSubmitting(false);
+      })
+      .catch(error => {
+        const { message } = error;
+        console.log(error);
+        setState({
+          ...state,
+          open: true,
+          errorMessage: message
+        });
+        setSubmitting(false);
+      });
   };
 
   return (
@@ -187,6 +201,7 @@ export default function SignInSide(props) {
               className={classes.submit}
               onClick={handleSIgnInGoogle}
               startIcon={<Icon className="fab fa-google" />}
+              disabled={submitting}
             >
               Sign In with Google
             </Button>
