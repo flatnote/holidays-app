@@ -98,7 +98,7 @@ class AddEvent extends Component {
     const formated = moment(date).format();
 
     firebase
-      .database()
+      .db()
       .ref("events")
       .push({ title, description, date: formated });
 

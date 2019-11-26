@@ -2,6 +2,7 @@ import app from "firebase/app";
 import "firebase/auth";
 import "firebase/database";
 import "firebase/messaging";
+import "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyD68cwiSy_j9GGUCGWo8zJCNkTE5UPvVvw",
@@ -22,9 +23,8 @@ class Firebase {
     this.db = app.database();
     this.googleProvider = new app.auth.GoogleAuthProvider();
     this.messaging = app.messaging();
+    this.firestore = app.firestore();
   }
-
-  database = () => this.db;
 
   doCreateUserWithEmailAndPassword = (email, password) =>
     this.auth.createUserWithEmailAndPassword(email, password);
@@ -80,6 +80,11 @@ class Firebase {
       await this.messaging.requestPermission();
       const token = await this.messaging.getToken();
       console.log("token is:", token);
+
+      this.firestore
+        .collection("fcmTokens")
+        .doc(token)
+        .set({ uid: this.auth.currentUser.uid });
 
       return token;
     } catch (error) {
