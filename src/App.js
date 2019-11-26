@@ -1,16 +1,19 @@
 import CssBaseline from "@material-ui/core/CssBaseline";
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
+import Chats from "./components/Chats";
 import Events from "./components/Events";
 import { withFirebase } from "./components/Firebase";
 import HomeAlert from "./components/HomeAlert";
 import Main from "./components/Main";
-import { withAuthentication, withAuthorization } from "./components/Session";
+import MenuAppBar from "./components/MenuAppBar";
+import {
+  AuthUserContext,
+  withAuthentication,
+  withAuthorization
+} from "./components/Session";
 import SignInSide from "./components/SignInSide";
 import SignUp from "./components/SignUp";
-import MenuAppBar from "./components/MenuAppBar";
-import { AuthUserContext } from "./components/Session";
-import MessageSocket from "./components/MessageSocket";
 
 class Holidays extends Component {
   render() {
@@ -43,9 +46,11 @@ class WrapMenuAppBar extends Component {
 
 const WrapMenuAppBarFirebase = withFirebase(WrapMenuAppBar);
 
-const WrapAuthenMessageComponent = withAuthorization(condition)(MessageSocket);
-
 class App extends Component {
+  componentDidMount() {
+    console.log(this.props);
+  }
+
   render() {
     return (
       <Router>
@@ -60,9 +65,9 @@ class App extends Component {
           path="/events"
           component={withAuthorization(condition)(Events)}
         />
+        <Route path="/chats" component={withAuthorization(condition)(Chats)} />
         <Route path="/sign-in" component={withFirebase(SignInSide)} />
         <Route path="/sign-up" component={withFirebase(SignUp)} />
-        <WrapAuthenMessageComponent />
       </Router>
     );
   }

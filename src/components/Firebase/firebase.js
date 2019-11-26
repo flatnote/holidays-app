@@ -79,7 +79,7 @@ class Firebase {
     try {
       await this.messaging.requestPermission();
       const token = await this.messaging.getToken();
-      console.log("token is:", token);
+      // console.log("token is:", token);
 
       this.firestore
         .collection("fcmTokens")

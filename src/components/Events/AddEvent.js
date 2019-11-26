@@ -77,7 +77,8 @@ class AddEvent extends Component {
     this.state = {
       title: "",
       description: "",
-      date: ""
+      date: "",
+      openForm: false
     };
   }
 
@@ -105,51 +106,58 @@ class AddEvent extends Component {
     this.setState({ title: "", description: "", date: "" });
   };
 
+  handleOpen = () => {
+    this.setState({ openForm: true });
+  };
+
   render() {
+    const { openForm } = this.state;
     return (
       <div>
-        <div className="jumbotron event-form-container">
-          <form>
-            <div className="form-group">
-              <label>Title:</label>
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Enter event title"
-                name="title"
-                value={this.state.title}
-                onChange={this.handleChange}
-              />
-            </div>
+        <div className="event-form-container" style={{ minHeight: 50 }}>
+          {openForm && (
+            <form onSubmit={this.handleSubmit}>
+              <div className="form-group">
+                <label>Title:</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Enter event title"
+                  name="title"
+                  value={this.state.title}
+                  onChange={this.handleChange}
+                />
+              </div>
 
-            <div className="form-group">
-              <label>Description:</label>
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Enter event description"
-                name="description"
-                value={this.state.description}
-                onChange={this.handleChange}
-              />
-            </div>
+              <div className="form-group">
+                <label>Description:</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Enter event description"
+                  name="description"
+                  value={this.state.description}
+                  onChange={this.handleChange}
+                />
+              </div>
 
-            <div className="form-group">
-              <label>Event Date:</label>
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Enter date in the format mm/dd/yyyy"
-                name="date"
-                value={this.state.date}
-                onChange={this.handleChange}
-              />
-            </div>
+              <div className="form-group">
+                <label>Event Date:</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Enter date in the format mm/dd/yyyy"
+                  name="date"
+                  value={this.state.date}
+                  onChange={this.handleChange}
+                />
+              </div>
+            </form>
+          )}
 
-            <div onClick={this.handleSubmit}>
-              <FloatingActionButtonZoom />
-            </div>
-          </form>
+          <div onClick={this.handleOpen}>
+            <FloatingActionButtonZoom />
+          </div>
         </div>
       </div>
     );

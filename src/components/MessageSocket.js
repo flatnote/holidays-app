@@ -44,7 +44,6 @@ class MessageSocket extends Component {
     const { endpoint } = this.state;
     const socket = socketIOClient(endpoint);
     socket.on("new-message", messageList => {
-      console.log(messageList);
       this.setState({
         messageList: messageList.map(item => {
           return {

@@ -12,6 +12,7 @@ import Typography from "@material-ui/core/Typography";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import axios from "axios";
 import React, { Component } from "react";
+import loadingImg from "../../svg/Interwind-1s-200px.svg";
 import { withFirebase } from "../Firebase";
 
 const useStyles = makeStyles(theme => ({
@@ -44,16 +45,11 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function RecipeReviewCard(props) {
+function EventCard(props) {
   const classes = useStyles();
-  const [expanded, setExpanded] = React.useState(false);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
-
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
 
   const handleMenu = event => {
     setAnchorEl(event.currentTarget);
@@ -115,48 +111,34 @@ function RecipeReviewCard(props) {
           Description
         </Typography>
       </CardContent>
-      {/* <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
-        </IconButton>
-        <IconButton aria-label="share">
-          <ShareIcon />
-        </IconButton>
-        <IconButton
-          className={clsx(classes.expand, {
-            [classes.expandOpen]: expanded
-          })}
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label="show more"
-        >
-          <ExpandMoreIcon />
-        </IconButton>
-      </CardActions> */}
-      {/* <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <CardContent>
-          <Typography paragraph>Description:</Typography>
-        </CardContent>
-      </Collapse> */}
     </Card>
   );
 }
 
 class ListEvent extends Component {
   state = {
-    events: []
+    events: [],
+    loading: false,
+    noevent: false
   };
 
-  componentDidMount() {
-    this.fetchData();
+  async componentDidMount() {
+    this.setState({ loading: true });
+    await this.fetchData();
+    this.setState({ loading: false });
   }
 
   fetchData = async () => {
     const { firebase } = this.props;
 
-    const randomImgs = (
-      await axios.get("https://picsum.photos/v2/list?page=2&limit=100")
-    ).data;
+    const randomImgs = await axios
+      .get(
+        `https://picsum.photos/v2/list?page=${Math.floor(
+          Math.random() * 11
+        )}&limit=100`
+      )
+      .then(response => response.data)
+      .catch(error => console.log(error));
 
     const eventsRef = firebase
       .events()
@@ -185,18 +167,26 @@ class ListEvent extends Component {
   };
 
   render() {
-    const { events } = this.state;
+    const { events, loading, noevent } = this.state;
+    console.log(loading);
     return (
       <div>
-        {events.length ? (
+        {events.length &&
           events.map(event => (
             <div className="list-group" key={event.key}>
-              <RecipeReviewCard cardData={event} />
+              <EventCard cardData={event} />
             </div>
-          ))
-        ) : (
-          <div className="no-events text-center" style={{ padding: "100px 0" }}>
-            OOOPSY: NO EVENTS REGISTERED
+          ))}
+        {noevent && <div className="center">OOOPSY: NO EVENTS REGISTERED</div>}
+        {loading && (
+          <div className="center">
+            <img
+              src={loadingImg}
+              style={{
+                margin: "-100px 0 0 -100px"
+              }}
+              alt="loading"
+            />
           </div>
         )}
       </div>

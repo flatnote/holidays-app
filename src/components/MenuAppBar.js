@@ -18,6 +18,8 @@ import MenuIcon from "@material-ui/icons/Menu";
 import React from "react";
 import { Link } from "react-router-dom";
 import Avatar from "@material-ui/core/Avatar";
+import Logo from "../svg/hammock.svg";
+import ChatIcon from "@material-ui/icons/Chat";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -31,7 +33,9 @@ const useStyles = makeStyles(theme => ({
   },
   list: {
     width: 250
-  }
+  },
+  avatar: { margin: theme.spacing(1), backgroundColor: theme.palette.grey[50] },
+  link: { textDecoration: "none !important", color: theme.palette.common.black }
 }));
 
 function HomeIcon(props) {
@@ -41,6 +45,27 @@ function HomeIcon(props) {
     </SvgIcon>
   );
 }
+
+const menus = [
+  {
+    key: "Holidays",
+    text: "Holidays",
+    path: "/",
+    icon: <HomeIcon />
+  },
+  {
+    key: "Events",
+    text: "Events",
+    path: "/events",
+    icon: <CalendarTodayIcon />
+  },
+  {
+    key: "Chats",
+    text: "Chats",
+    path: "/chats",
+    icon: <ChatIcon />
+  }
+];
 
 export default function MenuAppBar(props) {
   const classes = useStyles();
@@ -89,30 +114,16 @@ export default function MenuAppBar(props) {
       onKeyDown={toggleDrawer(side, false)}
     >
       <List>
-        {[
-          {
-            key: "Holidays",
-            text: "Holidays",
-            path: "/"
-          },
-          {
-            key: "Events",
-            text: "Events",
-            path: "/events"
-          }
-        ].map((item, index) => (
-          <Link
-            to={item.path}
-            key={item.key}
-            onClick={() => {
-              setState({ ...state, currentTitle: item.text });
-              console.log(item.text, state);
-            }}
-          >
+        <ListItem>
+          <Avatar className={classes.avatar}>
+            <img src={Logo} height="100%" width="80%" alt="logo" />
+          </Avatar>
+        </ListItem>
+        <Divider />
+        {menus.map(item => (
+          <Link to={item.path} key={item.key} className={classes.link}>
             <ListItem button>
-              <ListItemIcon>
-                {index % 2 === 0 ? <HomeIcon /> : <CalendarTodayIcon />}
-              </ListItemIcon>
+              <ListItemIcon>{item.icon}</ListItemIcon>
               <ListItemText primary={item.text} />
             </ListItem>
           </Link>
