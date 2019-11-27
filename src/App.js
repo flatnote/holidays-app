@@ -47,10 +47,6 @@ class WrapMenuAppBar extends Component {
 const WrapMenuAppBarFirebase = withFirebase(WrapMenuAppBar);
 
 class App extends Component {
-  componentDidMount() {
-    console.log(this.props);
-  }
-
   render() {
     return (
       <Router>

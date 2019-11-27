@@ -10,7 +10,6 @@ import MenuItem from "@material-ui/core/MenuItem";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
-import axios from "axios";
 import React, { Component } from "react";
 import loadingImg from "../../svg/Interwind-1s-200px.svg";
 import { withFirebase } from "../Firebase";
@@ -116,62 +115,11 @@ function EventCard(props) {
 }
 
 class ListEvent extends Component {
-  state = {
-    events: [],
-    loading: false,
-    noevent: false
-  };
-
-  async componentDidMount() {
-    this.setState({ loading: true });
-    await this.fetchData();
-    this.setState({ loading: false });
-  }
-
-  fetchData = async () => {
-    const { firebase } = this.props;
-
-    const randomImgs = await axios
-      .get(
-        `https://picsum.photos/v2/list?page=${Math.floor(
-          Math.random() * 11
-        )}&limit=100`
-      )
-      .then(response => response.data)
-      .catch(error => console.log(error));
-
-    const eventsRef = firebase
-      .events()
-      .orderByKey()
-      .limitToLast(100);
-
-    eventsRef.on("value", snapshot => {
-      const valueObject = snapshot.val();
-      let events = [];
-
-      Object.keys(valueObject).forEach(key =>
-        events.push({ key, ...valueObject[key] })
-      );
-
-      events = events.map((event, index) => {
-        return {
-          key: event.key,
-          title: event.title,
-          description: event.description,
-          date: event.date,
-          imgData: randomImgs[index]
-        };
-      });
-      this.setState({ events });
-    });
-  };
-
   render() {
-    const { events, loading, noevent } = this.state;
-    console.log(loading);
+    const { events, loading, noevent } = this.props;
     return (
       <div>
-        {events.length &&
+        {events.length !== 0 &&
           events.map(event => (
             <div className="list-group" key={event.key}>
               <EventCard cardData={event} />

@@ -9,17 +9,16 @@ import { withFirebase } from "../Firebase";
 
 const useStyles = makeStyles(theme => ({
   root: {
-    backgroundColor: theme.palette.background.paper,
-    position: "relative"
+    backgroundColor: theme.palette.background.paper
   },
   fab: {
-    position: "absolute",
+    position: "fixed",
     bottom: theme.spacing(2),
     right: theme.spacing(2)
   }
 }));
 
-function FloatingActionButtonZoom() {
+function AddButton() {
   const classes = useStyles();
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
@@ -114,8 +113,8 @@ class AddEvent extends Component {
     const { openForm } = this.state;
     return (
       <div>
-        <div className="event-form-container" style={{ minHeight: 50 }}>
-          {openForm && (
+        <div className="event-form-container">
+          {openForm === true && (
             <form onSubmit={this.handleSubmit}>
               <div className="form-group">
                 <label>Title:</label>
@@ -156,7 +155,7 @@ class AddEvent extends Component {
           )}
 
           <div onClick={this.handleOpen}>
-            <FloatingActionButtonZoom />
+            <AddButton />
           </div>
         </div>
       </div>

@@ -84,7 +84,7 @@ class Firebase {
       // console.log("token is:", token);
 
       const e = module.init();
-      
+
       this.firestore
         .collection("fcmTokens")
         .doc(token)
