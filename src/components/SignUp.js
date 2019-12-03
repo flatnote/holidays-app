@@ -40,7 +40,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function SignUp(props) {
-  const { firebase } = props;
+  const { firebase, history } = props;
   const classes = useStyles();
 
   const [submitting, setSubmitting] = React.useState(null);
@@ -69,6 +69,9 @@ export default function SignUp(props) {
         console.log(response);
         setState({ ...state, open: true, errorMessage: "Sign up success!" });
         setSubmitting(false);
+        if (response) {
+          history.push("/");
+        }
       })
       .catch(error => {
         console.log(error);
