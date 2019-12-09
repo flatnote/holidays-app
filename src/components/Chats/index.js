@@ -117,7 +117,6 @@ class index extends Component {
   async fetchMessages() {
     await this.messageRef
       .orderBy("created_at", "asc")
-      .limit(10)
       .onSnapshot(querySnapshot => {
         var messages = [];
         querySnapshot.forEach(function(doc) {
