@@ -51,7 +51,7 @@ const withAuthentication = Component => {
 
 const LoadingScreen = ({ type, color }) => {
   return (
-    <div className="center" style={{ margin: "-50px 0 0 -25px" }}>
+    <div className="loading-center" style={{ margin: "-50px 0 0 -25px" }}>
       <CircularIndeterminate />
     </div>
   );

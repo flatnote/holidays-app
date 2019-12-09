@@ -1,17 +1,14 @@
-import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
 import { makeStyles, withTheme } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
+import { loadCSS } from "fg-loadcss";
 import React, { Component } from "react";
 import { withAuthorization } from "../Session";
-import ChatHeader from "./ChatHeader";
+import "./index.css";
+import moment from "moment";
 
 const useStyles = makeStyles(theme => ({
   container: {
-    padding: theme.spacing(2),
-    backgroundColor: theme.palette.grey[200]
+    margin: theme.spacing(2)
   },
   paper: {
     padding: theme.spacing(2),
@@ -20,64 +17,106 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function MessageList(props) {
+function ChatBox(props) {
   const classes = useStyles();
-  const { messages } = props;
-  return (
-    <div>
-      {messages.map(item => {
-        return (
-          <Paper className={classes.paper} key={item.id}>
-            {item.message}
-          </Paper>
-        );
-      })}
-    </div>
-  );
-}
+  const { messages, authUser, firebase } = props;
+  // set up firestore before use
+  const { firestore } = firebase;
+  const messageRef = firestore.collection("messages");
 
-function LayOut(props) {
-  const classes = useStyles();
-  const { messages } = props;
+  React.useEffect(() => {
+    loadCSS(
+      "https://use.fontawesome.com/releases/v5.1.0/css/all.css",
+      document.querySelector("#font-awesome-css")
+    );
+  }, []);
+
+  const [state, setState] = React.useState({
+    inputValue: ""
+  });
+
+  const createMessage = async ({ message, uid }) => {
+    await messageRef.add({
+      message,
+      user_id: uid,
+      created_at: new Date()
+    });
+  };
+
+  const handleKeyPress = event => {
+    if (event.key === "Enter") {
+      submitMessage();
+    }
+  };
+
+  const submitMessage = () => {
+    const { inputValue } = state;
+    if (inputValue) {
+      createMessage({ message: inputValue, uid: authUser.uid });
+      setState({ inputValue: "" });
+    }
+  };
 
   return (
     <div className={classes.container}>
       <CssBaseline />
-      <Grid container spacing={3}>
-        <Grid item xs={12}>
-          <ChatHeader />
-        </Grid>
-        <Grid item xs={12}>
-          <MessageList messages={messages} />
-        </Grid>
-      </Grid>
+      <div className="chat">
+        <div className="contact bar">
+          <h2>All Chats</h2>
+        </div>
+        <div className="messages" id="chat">
+          <div className="time">
+            {moment().format("dddd, Do MMMM YYYY, h:mm:ss a")}
+          </div>
+          {messages.map(item => {
+            let messageClass = "message other";
+            if (authUser.uid === item.user_id) {
+              messageClass = "message me";
+            }
+            return (
+              <div className={messageClass} key={item.id}>
+                {item.message}
+              </div>
+            );
+          })}
+          <div className="message other">
+            <div className="typing typing-1"></div>
+            <div className="typing typing-2"></div>
+            <div className="typing typing-3"></div>
+          </div>
+        </div>
+        <div className="input">
+          <i className="fas fa-camera"></i>
+          <i className="far fa-laugh-beam"></i>
+          <input
+            placeholder="Type your message here!"
+            type="text"
+            onKeyPress={handleKeyPress}
+            value={state.inputValue}
+            onChange={event => setState({ inputValue: event.target.value })}
+          />
+          <i
+            className="fas fa-chevron-right"
+            onClick={() => submitMessage()}
+          ></i>
+        </div>
+      </div>
     </div>
   );
 }
 
 class index extends Component {
-  state = { messages: [], message: "" };
+  state = { messages: [] };
+
+  messageRef = this.props.firebase.firestore.collection("messages");
 
   componentDidMount() {
     this.fetchMessages();
   }
 
-  firestore = this.props.firebase.firestore;
-
-  messageRef = this.firestore.collection("messages");
-
-  async createMessage({ message, uid }) {
-    console.log(this.messageRef);
-    await this.messageRef.add({
-      message,
-      user_id: uid,
-      created_at: new Date()
-    });
-  }
-
   async fetchMessages() {
-    this.messageRef
-      .orderBy("created_at", "desc")
+    await this.messageRef
+      .orderBy("created_at", "asc")
       .limit(10)
       .onSnapshot(querySnapshot => {
         var messages = [];
@@ -85,42 +124,21 @@ class index extends Component {
           messages.push({ id: doc.id, ...doc.data() });
         });
         this.setState({ messages });
+        let chat = document.getElementById("chat");
+        chat.scrollTop = chat.scrollHeight - chat.clientHeight;
       });
   }
 
-  handleSubmit = event => {
-    event.preventDefault();
-    const { authUser } = this.props;
-    const { message } = this.state;
-    this.createMessage({ message, uid: authUser.uid });
-  };
-
   render() {
     const { messages } = this.state;
-    const { authUser, theme } = this.props;
+    const { authUser } = this.props;
     return (
-      <div>
-        <LayOut
-          {...this.props}
-          messages={messages}
-          createMessage={this.createMessage}
-          authUser={authUser}
-        />
-        <div style={{ padding: theme.spacing(2) }}>
-          <form noValidate autoComplete="off" onSubmit={this.handleSubmit}>
-            <TextField
-              fullWidth
-              label="Message"
-              onChange={e => {
-                this.setState({ message: e.target.value });
-              }}
-            />
-            <Button type="submit" variant="contained" color="primary">
-              Send
-            </Button>
-          </form>
-        </div>
-      </div>
+      <ChatBox
+        {...this.props}
+        messages={messages}
+        createMessage={this.createMessage}
+        authUser={authUser}
+      />
     );
   }
 }

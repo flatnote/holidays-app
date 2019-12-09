@@ -125,9 +125,11 @@ class ListEvent extends Component {
               <EventCard cardData={event} />
             </div>
           ))}
-        {noevent && <div className="center">OOOPSY: NO EVENTS REGISTERED</div>}
+        {noevent && (
+          <div className="loading-center">OOOPSY: NO EVENTS REGISTERED</div>
+        )}
         {loading && (
-          <div className="center">
+          <div className="loading-center">
             <img
               src={loadingImg}
               style={{

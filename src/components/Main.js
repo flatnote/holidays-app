@@ -92,7 +92,7 @@ class Main extends Component {
     };
 
     return loading ? (
-      <div className="center">
+      <div className="loading-center">
         <img
           src={loadingImg}
           style={{
