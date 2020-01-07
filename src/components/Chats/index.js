@@ -3,7 +3,7 @@ import { makeStyles, withTheme } from "@material-ui/core/styles";
 import { loadCSS } from "fg-loadcss";
 import React, { Component } from "react";
 import { withAuthorization } from "../Session";
-import "./index.css";
+import "./chats.css";
 import moment from "moment";
 
 const useStyles = makeStyles(theme => ({

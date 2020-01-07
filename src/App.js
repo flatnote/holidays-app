@@ -7,6 +7,7 @@ import { withFirebase } from "./components/Firebase";
 import HomeAlert from "./components/HomeAlert";
 import Main from "./components/Main";
 import MenuAppBar from "./components/MenuAppBar";
+import MyProfile from "./components/MyProfile";
 import {
   AuthUserContext,
   withAuthentication,
@@ -62,6 +63,10 @@ class App extends Component {
           component={withAuthorization(condition)(Events)}
         />
         <Route path="/chats" component={withAuthorization(condition)(Chats)} />
+        <Route
+          path="/myProfile"
+          component={withAuthorization(condition)(MyProfile)}
+        />
         <Route path="/sign-in" component={withFirebase(SignInSide)} />
         <Route path="/sign-up" component={withFirebase(SignUp)} />
       </Router>
