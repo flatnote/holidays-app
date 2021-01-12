@@ -1,20 +1,21 @@
-import CssBaseline from "@material-ui/core/CssBaseline";
+import {
+  AuthUserContext,
+  withAuthentication,
+  withAuthorization,
+} from "./components/Session";
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { Route, BrowserRouter as Router } from "react-router-dom";
+
 import Chats from "./components/Chats";
+import CssBaseline from "@material-ui/core/CssBaseline";
 import Events from "./components/Events";
-import { withFirebase } from "./components/Firebase";
 import HomeAlert from "./components/HomeAlert";
 import Main from "./components/Main";
 import MenuAppBar from "./components/MenuAppBar";
 import MyProfile from "./components/MyProfile";
-import {
-  AuthUserContext,
-  withAuthentication,
-  withAuthorization
-} from "./components/Session";
 import SignInSide from "./components/SignInSide";
 import SignUp from "./components/SignUp";
+import { withFirebase } from "./components/Firebase";
 
 class Holidays extends Component {
   render() {
@@ -27,13 +28,13 @@ class Holidays extends Component {
   }
 }
 
-const condition = authUser => !!authUser;
+const condition = (authUser) => !!authUser;
 
 class WrapMenuAppBar extends Component {
   render() {
     return (
       <AuthUserContext.Consumer>
-        {authUser =>
+        {(authUser) =>
           authUser ? (
             <MenuAppBar {...this.props} auth authUser={authUser} />
           ) : (

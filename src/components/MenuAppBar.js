@@ -1,41 +1,44 @@
+import AccountCircle from "@material-ui/icons/AccountCircle";
 import AppBar from "@material-ui/core/AppBar";
+import Avatar from "@material-ui/core/Avatar";
+import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
+import ChatIcon from "@material-ui/icons/Chat";
 import Divider from "@material-ui/core/Divider";
 import Drawer from "@material-ui/core/Drawer";
 import IconButton from "@material-ui/core/IconButton";
+import { Link } from "react-router-dom";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
+import Logo from "../svg/hammock.svg";
 import Menu from "@material-ui/core/Menu";
+import MenuIcon from "@material-ui/icons/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
-import { makeStyles } from "@material-ui/core/styles";
+import React from "react";
 import SvgIcon from "@material-ui/core/SvgIcon";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import AccountCircle from "@material-ui/icons/AccountCircle";
-import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
-import MenuIcon from "@material-ui/icons/Menu";
-import React from "react";
-import { Link } from "react-router-dom";
-import Avatar from "@material-ui/core/Avatar";
-import Logo from "../svg/hammock.svg";
-import ChatIcon from "@material-ui/icons/Chat";
+import { makeStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   menuButton: {
-    marginRight: theme.spacing(2)
+    marginRight: theme.spacing(2),
   },
   title: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   list: {
-    width: 250
+    width: 250,
   },
   avatar: { margin: theme.spacing(1), backgroundColor: theme.palette.grey[50] },
-  link: { textDecoration: "none !important", color: theme.palette.common.black }
+  link: {
+    textDecoration: "none !important",
+    color: theme.palette.common.black,
+  },
 }));
 
 function HomeIcon(props) {
@@ -51,20 +54,20 @@ const menus = [
     key: "Holidays",
     text: "Holidays",
     path: "/",
-    icon: <HomeIcon />
+    icon: <HomeIcon />,
   },
   {
     key: "Events",
     text: "Events",
     path: "/events",
-    icon: <CalendarTodayIcon />
+    icon: <CalendarTodayIcon />,
   },
   {
     key: "Chats",
     text: "Chats",
     path: "/chats",
-    icon: <ChatIcon />
-  }
+    icon: <ChatIcon />,
+  },
 ];
 
 export default function MenuAppBar(props) {
@@ -75,7 +78,7 @@ export default function MenuAppBar(props) {
 
   const { photoURL } = authUser;
 
-  const handleMenu = event => {
+  const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -93,10 +96,10 @@ export default function MenuAppBar(props) {
     left: false,
     bottom: false,
     right: false,
-    currentTitle: "Holidays"
+    currentTitle: "Holidays",
   });
 
-  const toggleDrawer = (side, open) => event => {
+  const toggleDrawer = (side, open) => (event) => {
     if (
       event.type === "keydown" &&
       (event.key === "Tab" || event.key === "Shift")
@@ -106,7 +109,7 @@ export default function MenuAppBar(props) {
     setState({ ...state, [side]: open });
   };
 
-  const sideList = side => (
+  const sideList = (side) => (
     <div
       className={classes.list}
       role="presentation"
@@ -120,7 +123,7 @@ export default function MenuAppBar(props) {
           </Avatar>
         </ListItem>
         <Divider />
-        {menus.map(item => (
+        {menus.map((item) => (
           <Link to={item.path} key={item.key} className={classes.link}>
             <ListItem button>
               <ListItemIcon>{item.icon}</ListItemIcon>
@@ -150,17 +153,23 @@ export default function MenuAppBar(props) {
             {state.currentTitle}
           </Typography>
           {auth && (
-            <div style={{ display: "flex" }}>
-              <div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              {/* <div>
                 <a href="https://play.google.com/store/apps/details?id=com.flatnote.coeops&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1">
                   <img
                     alt="Get it on Google Play"
                     src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
-                    height={50}
-                    width={100}
+                    height={64}
+                    width={120}
                   />
                 </a>
-              </div>
+              </div> */}
               <div>
                 <IconButton
                   aria-label="account of current user"
@@ -176,12 +185,12 @@ export default function MenuAppBar(props) {
                   anchorEl={anchorEl}
                   anchorOrigin={{
                     vertical: "top",
-                    horizontal: "right"
+                    horizontal: "right",
                   }}
                   keepMounted
                   transformOrigin={{
                     vertical: "top",
-                    horizontal: "right"
+                    horizontal: "right",
                   }}
                   open={open}
                   onClose={handleClose}

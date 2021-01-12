@@ -1,15 +1,41 @@
+import React, { Component } from "react";
+
+import { AuthUserContext } from "./Session";
 import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import axios from "axios";
-import moment from "moment";
 import QueueAnim from "rc-queue-anim";
-import React, { Component } from "react";
 import Slider from "react-slick";
 import URL from "../configs/url.json";
+import axios from "axios";
 import loadingImg from "../svg/Interwind-1s-200px.svg";
+import moment from "moment";
 import { withFirebase } from "./Firebase";
-import { AuthUserContext } from "./Session";
 
+const months = [
+  { month: "January", data: [], bodyClass: "" },
+  { month: "February", data: [] },
+  { month: "March", data: [] },
+  { month: "April", data: [] },
+  { month: "May", data: [] },
+  { month: "June", data: [] },
+  { month: "July ", data: [] },
+  { month: "August", data: [] },
+  { month: "September", data: [] },
+  { month: "October", data: [] },
+  { month: "November ", data: [] },
+  { month: "December", data: [] },
+];
+
+const mapingFromTemplate = (holidays) => {
+  return months.map((item, index) => {
+    item.data = holidays.filter(
+      (holiday) => moment(holiday.publicHolidayDate).get("month") === index
+    );
+    item.bgUrl =
+      "https://image.freepik.com/free-vector/geometric-background-japanese-style_23-2148474120.jpg";
+    return item;
+  });
+};
 class Main extends Component {
   constructor(props) {
     super(props);
@@ -19,7 +45,7 @@ class Main extends Component {
       yearSeleced: moment().year(),
       cardData: [],
       options: [],
-      loading: false
+      loading: false,
     };
 
     this.selectChange = this.selectChange.bind(this);
@@ -44,7 +70,9 @@ class Main extends Component {
       const url = `${URL.HolidaysAPI}/insert`;
       for (let index = 0; index < scgData.length; index++) {
         const element = scgData[index];
-        await axios.post(url, element).then(response => console.log(response));
+        await axios
+          .post(url, element)
+          .then((response) => console.log(response));
       }
     }
 
@@ -56,19 +84,19 @@ class Main extends Component {
   getDatabase = () => {
     const { yearSeleced } = this.state;
     const url = `${URL.HolidaysAPI}/all?year=${yearSeleced}&grouping=true`;
-    return axios.get(url).then(response => response.data);
+    return axios.get(url).then((response) => response.data);
   };
 
   getScgData = () => {
     const { yearSeleced } = this.state;
     const url = `${URL.ScgAPI}?years=${yearSeleced}`;
-    return axios.get(url).then(response => response.data);
+    return axios.get(url).then((response) => response.data);
   };
 
   getHolidayData = async () => {
     this.setState({ loading: true });
-    const data = await this.getDatabase();
-    this.setState({ cardData: data, loading: false });
+    const data = await this.getScgData();
+    this.setState({ cardData: mapingFromTemplate(data), loading: false });
   };
 
   selectChange(event) {
@@ -87,7 +115,7 @@ class Main extends Component {
       speed: 500,
       slidesToShow: 1,
       slidesToScroll: 1,
-      initialSlide: parseInt(month) - 1
+      initialSlide: parseInt(month) - 1,
       // adaptiveHeight: true
     };
 
@@ -96,7 +124,7 @@ class Main extends Component {
         <img
           src={loadingImg}
           style={{
-            margin: "-100px 0 0 -100px"
+            margin: "-100px 0 0 -100px",
           }}
           alt="loading"
         />
@@ -110,15 +138,15 @@ class Main extends Component {
                 <div className="card_image">
                   <img src={item.bgUrl} alt={`card ${index}`} />{" "}
                 </div>
-                <div className={item.titleClass}>
+                <div className="card_title">
                   <span role="img" aria-label="Calendar">
                     📅
                   </span>
                   {` ${item.month}`}
                 </div>
-                <div className={item.bodyClass} style={{ minHeight: 100 }}>
+                <div className="card-text" style={{ minHeight: 100 }}>
                   <ul>
-                    {item.data.map(subItem => (
+                    {item.data.map((subItem) => (
                       <li key={subItem.publicHolidayDate}>
                         <span>{subItem.publicHolidayName} </span>
                         <span style={{ color: "#e44f24", fontWeight: 700 }}>
@@ -141,7 +169,7 @@ class Main extends Component {
   render() {
     return (
       <AuthUserContext.Consumer>
-        {authUser =>
+        {(authUser) =>
           authUser ? (
             <div>
               <CssBaseline />
