@@ -1,10 +1,11 @@
-import Fab from "@material-ui/core/Fab";
+import React, { Component } from "react";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
-import Zoom from "@material-ui/core/Zoom";
+
 import AddIcon from "@material-ui/icons/Add";
 import EditIcon from "@material-ui/icons/Edit";
+import Fab from "@material-ui/core/Fab";
+import Zoom from "@material-ui/core/Zoom";
 import moment from "moment";
-import React, { Component } from "react";
 import { withFirebase } from "../Firebase";
 
 const useStyles = makeStyles(theme => ({

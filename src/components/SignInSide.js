@@ -1,60 +1,49 @@
 import Avatar from "@material-ui/core/Avatar";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
+import Copyright from "./Copyright";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Grid from "@material-ui/core/Grid";
 import Icon from "@material-ui/core/Icon";
 import Link from "@material-ui/core/Link";
+import Logo from "../svg/hammock.svg";
 import Paper from "@material-ui/core/Paper";
-import Snackbar from "@material-ui/core/Snackbar";
-import { makeStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-import Typography from "@material-ui/core/Typography";
-import CheckCircleIcon from "@material-ui/icons/CheckCircle";
-import ErrorIcon from "@material-ui/icons/Error";
-import InfoIcon from "@material-ui/icons/Info";
-import WarningIcon from "@material-ui/icons/Warning";
-import { loadCSS } from "fg-loadcss";
 import React from "react";
 import { Link as RouterLink } from "react-router-dom";
-import Logo from "../svg/hammock.svg";
-import Copyright from "./Copyright";
+import Snackbar from "@material-ui/core/Snackbar";
+import TextField from "@material-ui/core/TextField";
+import Typography from "@material-ui/core/Typography";
+import { loadCSS } from "fg-loadcss";
+import { makeStyles } from "@material-ui/core/styles";
 
-const variantIcon = {
-  success: CheckCircleIcon,
-  warning: WarningIcon,
-  error: ErrorIcon,
-  info: InfoIcon
-};
-
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
-    height: "100vh"
+    height: "100vh",
   },
   image: {
     backgroundImage: "url(https://source.unsplash.com/random)",
     backgroundRepeat: "no-repeat",
     backgroundColor: theme.palette.grey[50],
     backgroundSize: "cover",
-    backgroundPosition: "center"
+    backgroundPosition: "center",
   },
   paper: {
     margin: theme.spacing(8, 4),
     display: "flex",
     flexDirection: "column",
-    alignItems: "center"
+    alignItems: "center",
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.grey[50]
+    backgroundColor: theme.palette.grey[50],
   },
   form: {
     width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(1)
+    marginTop: theme.spacing(1),
   },
   submit: {
-    margin: theme.spacing(3, 0, 2)
-  }
+    margin: theme.spacing(3, 0, 2),
+  },
 }));
 
 export default function SignInSide(props) {
@@ -74,12 +63,12 @@ export default function SignInSide(props) {
     open: false,
     vertical: "top",
     horizontal: "center",
-    errorMessage: null
+    errorMessage: null,
   });
 
-  const { vertical, horizontal, open, errorMessage, variant } = state;
+  const { vertical, horizontal, open, errorMessage } = state;
 
-  const handleSubmit = event => {
+  const handleSubmit = (event) => {
     event.preventDefault();
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
@@ -87,20 +76,20 @@ export default function SignInSide(props) {
     setSubmitting(true);
     firebase
       .doSignInWithEmailAndPassword(email, password)
-      .then(response => {
+      .then((response) => {
         console.log(response);
         if (response) {
           history.push("/");
         }
         setSubmitting(false);
       })
-      .catch(error => {
+      .catch((error) => {
         const { message } = error;
         console.log(error);
         setState({
           ...state,
           open: true,
-          errorMessage: message
+          errorMessage: message,
         });
         setSubmitting(false);
       });
@@ -114,20 +103,20 @@ export default function SignInSide(props) {
     setSubmitting(true);
     firebase
       .doSignInWithGoogle()
-      .then(response => {
+      .then((response) => {
         console.log(response);
         if (response) {
           history.push("/");
         }
         setSubmitting(false);
       })
-      .catch(error => {
+      .catch((error) => {
         const { message } = error;
         console.log(error);
         setState({
           ...state,
           open: true,
-          errorMessage: message
+          errorMessage: message,
         });
         setSubmitting(false);
       });
@@ -141,7 +130,7 @@ export default function SignInSide(props) {
         open={open}
         onClose={handleClose}
         ContentProps={{
-          "aria-describedby": "message-id"
+          "aria-describedby": "message-id",
         }}
         message={<span id="message-id">{errorMessage}</span>}
         autoHideDuration={6000}
