@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import { AuthUserContext } from "./Session";
 import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
+import HolidayCard from "./HolidayCard";
 import QueueAnim from "rc-queue-anim";
 import Slider from "react-slick";
 import URL from "../configs/url.json";
@@ -132,35 +133,9 @@ class Main extends Component {
     ) : (
       <div key="animate1">
         <Slider {...settings}>
-          {cardData.map((item, index) => {
-            return (
-              <div className="card" key={item.month}>
-                <div className="card_image">
-                  <img src={item.bgUrl} alt={`card ${index}`} />{" "}
-                </div>
-                <div className="card_title">
-                  <span role="img" aria-label="Calendar">
-                    📅
-                  </span>
-                  {` ${item.month}`}
-                </div>
-                <div className="card-text" style={{ minHeight: 100 }}>
-                  <ul>
-                    {item.data.map((subItem) => (
-                      <li key={subItem.publicHolidayDate}>
-                        <span>{subItem.publicHolidayName} </span>
-                        <span style={{ color: "#e44f24", fontWeight: 700 }}>
-                          {moment(subItem.publicHolidayDate).format(
-                            "ddd Do MMMM YYYY"
-                          )}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            );
-          })}
+          {cardData.map((item, index) => (
+            <HolidayCard cardData={item} index={index} />
+          ))}
         </Slider>
       </div>
     );
@@ -171,7 +146,7 @@ class Main extends Component {
       <AuthUserContext.Consumer>
         {(authUser) =>
           authUser ? (
-            <div>
+            <div className="center-container">
               <CssBaseline />
               <Container>
                 <QueueAnim delay={300}>{this.renderCardGroup()}</QueueAnim>

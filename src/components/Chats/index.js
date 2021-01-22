@@ -1,20 +1,24 @@
-import CssBaseline from "@material-ui/core/CssBaseline";
-import { makeStyles, withTheme } from "@material-ui/core/styles";
-import { loadCSS } from "fg-loadcss";
-import React, { Component } from "react";
-import { withAuthorization } from "../Session";
 import "./chats.css";
-import moment from "moment";
 
-const useStyles = makeStyles(theme => ({
+import React, { Component } from "react";
+import { makeStyles, withTheme } from "@material-ui/core/styles";
+
+import CssBaseline from "@material-ui/core/CssBaseline";
+import { loadCSS } from "fg-loadcss";
+import moment from "moment";
+import { withAuthorization } from "../Session";
+
+const useStyles = makeStyles((theme) => ({
   container: {
-    margin: theme.spacing(2)
+    margin: theme.spacing(2),
+    marginTop: "-4em",
+    overflow: "hidden",
   },
   paper: {
     padding: theme.spacing(2),
     textAlign: "center",
-    color: theme.palette.text.secondary
-  }
+    color: theme.palette.text.secondary,
+  },
 }));
 
 function ChatBox(props) {
@@ -32,18 +36,18 @@ function ChatBox(props) {
   }, []);
 
   const [state, setState] = React.useState({
-    inputValue: ""
+    inputValue: "",
   });
 
   const createMessage = async ({ message, uid }) => {
     await messageRef.add({
       message,
       user_id: uid,
-      created_at: new Date()
+      created_at: new Date(),
     });
   };
 
-  const handleKeyPress = event => {
+  const handleKeyPress = (event) => {
     if (event.key === "Enter") {
       submitMessage();
     }
@@ -58,9 +62,9 @@ function ChatBox(props) {
   };
 
   return (
-    <div className={classes.container}>
+    <div className={`${classes.container} center-container`}>
       <CssBaseline />
-      <div className="chat">
+      <div className="chat" style={{ flex: 1 }}>
         <div className="contact bar">
           <h2>All Chats</h2>
         </div>
@@ -68,7 +72,7 @@ function ChatBox(props) {
           <div className="time">
             {moment().format("dddd, Do MMMM YYYY, h:mm:ss a")}
           </div>
-          {messages.map(item => {
+          {messages.map((item) => {
             let messageClass = "message other";
             if (authUser.uid === item.user_id) {
               messageClass = "message me";
@@ -93,7 +97,7 @@ function ChatBox(props) {
             type="text"
             onKeyPress={handleKeyPress}
             value={state.inputValue}
-            onChange={event => setState({ inputValue: event.target.value })}
+            onChange={(event) => setState({ inputValue: event.target.value })}
           />
           <i
             className="fas fa-chevron-right"
@@ -117,9 +121,9 @@ class index extends Component {
   async fetchMessages() {
     await this.messageRef
       .orderBy("created_at", "asc")
-      .onSnapshot(querySnapshot => {
+      .onSnapshot((querySnapshot) => {
         var messages = [];
-        querySnapshot.forEach(function(doc) {
+        querySnapshot.forEach(function (doc) {
           messages.push({ id: doc.id, ...doc.data() });
         });
         this.setState({ messages });
@@ -142,6 +146,6 @@ class index extends Component {
   }
 }
 
-const condition = authUser => !!authUser;
+const condition = (authUser) => !!authUser;
 
 export default withTheme(withAuthorization(condition)(index));

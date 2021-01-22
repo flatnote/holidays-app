@@ -5,6 +5,14 @@ h1 {
   font-size: 60px;
 }
 
+.center-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: -4em;
+}
+
 .loading-center {
   position: absolute;
   width: 200px;
@@ -87,6 +95,13 @@ h1 {
 
 .card-text {
   padding: 10px;
+  min-height: 100px;
+  font-size: x-large;
+}
+
+.card-text-date {
+  color: #e04d24;
+  font-weight: 700;
 }
 
 .footer {
