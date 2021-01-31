@@ -7,6 +7,7 @@ import {
 
 import Chats from "./components/Chats";
 import CssBaseline from "@material-ui/core/CssBaseline";
+import Dashboard from "./pages/Dashboard";
 import Events from "./components/Events";
 import HeaderBar from "./components/HeaderBar";
 import HomeAlert from "./components/HomeAlert";
@@ -47,6 +48,10 @@ class App extends Component {
         <Route
           path="/myProfile"
           component={withAuthorization(commonCondition)(MyProfile)}
+        />
+        <Route
+          path="/dashboard"
+          component={withAuthorization(commonCondition)(Dashboard)}
         />
         <Route path="/sign-in" component={withFirebase(SignInSide)} />
         <Route path="/sign-up" component={withFirebase(SignUp)} />
